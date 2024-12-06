@@ -16,25 +16,17 @@ interface Cached {
   promise: Promise<Mongoose> | null;
 }
 
-declare global {
-  // Adding a custom property to the Node.js global object
-  namespace NodeJS {
-    interface Global {
-      mongoose: Cached;
-    }
-  }
-}
-
-// Initialize the global mongoose cache if not already present
+// Declare a global variable for caching the connection
 const globalWithMongoose = global as typeof globalThis & {
-  mongoose?: Cached;
+  _mongooseCache?: Cached;
 };
 
-if (!globalWithMongoose.mongoose) {
-  globalWithMongoose.mongoose = { conn: null, promise: null };
+// Initialize the global cache if not already present
+if (!globalWithMongoose._mongooseCache) {
+  globalWithMongoose._mongooseCache = { conn: null, promise: null };
 }
 
-const cached = globalWithMongoose.mongoose!;
+const cached = globalWithMongoose._mongooseCache;
 
 export async function connectDB(): Promise<Mongoose> {
   if (cached.conn) {
