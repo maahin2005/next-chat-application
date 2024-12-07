@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
 // Handle GET request to fetch data
 export async function GET() {
-  await connectDB();
+  await connectDB();  
 
   try {
     const data = await Dummy.find();
