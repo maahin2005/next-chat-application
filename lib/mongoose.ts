@@ -18,6 +18,7 @@ interface Cached {
 
 declare global {
   // Adding a custom property to the Node.js global object
+  // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace NodeJS {
     interface Global {
       mongoose: Cached;
