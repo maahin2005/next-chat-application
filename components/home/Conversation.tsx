@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 const Conversation: React.FC = () => {
   return (
@@ -9,4 +9,4 @@ const Conversation: React.FC = () => {
   );
 };
 
-export default MyComponent;
+export default Conversation;
