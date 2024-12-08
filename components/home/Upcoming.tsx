@@ -33,11 +33,11 @@ const Upcoming: React.FC = () => {
             />
           </div>
           <div className="absolute flex items-center bottom-0 z-20 w-full h-[80px] m-auto px-12">
-            {videoCallIcons.map((el): any => (
+            {videoCallIcons.map((el, i): any => (
               <div className="m-auto">
                 <Image
                   src={el}
-                  key={el}
+                  key={i}
                   width={45}
                   height={45}
                   alt="Black Overlay"
