@@ -1,18 +1,9 @@
-<<<<<<< Updated upstream
-import React from "react";
-import { Button } from "../ui/button";
-import Image from "next/image";
-import Image1 from "@/resources/Images/Home/cImage1.svg";
-import Image2 from "@/resources/Images/Home/cImage2.svg";
-import Image3 from "@/resources/Images/Home/cImage2.svg";
-=======
 import Image from "next/image";
 import React from "react";
 import Image1 from "@/resources/Images/Home/cImage1.svg";
 import Image2 from "@/resources/Images/Home/cImage2.svg";
 import Image3 from "@/resources/Images/Home/cImage3.svg";
 import { Button } from "../ui/button";
->>>>>>> Stashed changes
 
 const Conversation: React.FC = () => {
   return (

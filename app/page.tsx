@@ -1,4 +1,3 @@
-import Upcoming from "@/components/home/Upcoming";
 import Navbar from "./../components/Navbar";
 import Footer from "./../components/Footer";
 import Header from "./../components/home/Header";
