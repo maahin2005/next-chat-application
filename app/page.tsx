@@ -7,16 +7,18 @@ import Testimonial from "./../components/home/Testimonial";
 
 import Conversation from "@/components/home/Conversation";
 import Upcoming from "@/components/home/Upcoming";
+import CustomerHub from "@/components/home/CustomerHub";
 
 export default function Home() {
   return (
     <div>
       <Navbar />
-      <Header/>
-      <FeaturesSection/>
+      <Header />
+      <FeaturesSection />
       <Upcoming />
       <Conversation />
-      <Testimonial/>
+      <CustomerHub />
+      <Testimonial />
       <Footer />
     </div>
   );
