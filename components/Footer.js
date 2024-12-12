@@ -1,19 +1,27 @@
+"use client";
+
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
+import { redirect } from "next/navigation";
 
 const Footer = () => {
   // Array of menus
   const menus = ["About", "Feature", "Works", "Support"];
 
+  const handleRedirect = () => {
+    redirect(`/`); // Replace '/login' with the desired route
+  };
+
   return (
-    <footer className="py-8 px-4 flex flex-col items-center bg-gray-50">
+    <footer className="py-8 px-4 min-h-[400px] flex flex-col items-center bg-gray-50">
       {/* Top Section */}
       <div className="text-center mb-8">
-        <h3 className="text-2xl font-semibold mb-4">
-          Ready to grow your business?<br/>
-          Start with Apex, become faster every second
+        <h3 className="text-5xl font-kanit font-medium my-10">
+          Ready to grow your business?
+          <br />
+          Start with Apex, become faster <br /> every second
         </h3>
-        <button className="px-6 py-3 bg-[#FB8E0B] text-white rounded-lg hover:bg-[#FB8E55] transition">
+        <button className="px-6 py-3 bg-contractColor-light text-white rounded-lg hover:bg-contractColor-dark transition">
           Start Chatting Now
         </button>
       </div>
@@ -21,7 +29,10 @@ const Footer = () => {
       {/* Middle Section */}
       <div className="flex flex-wrap justify-between items-center w-full max-w-6xl mb-6 gap-6">
         {/* Logo */}
-        <h1 className="text-4xl font-semibold bg-gradient-to-r from-[#FD6003] to-[#FB8E0B] bg-clip-text text-transparent font-sans">
+        <h1
+          onClick={handleRedirect}
+          className="text-4xl cursor-pointer font-semibold bg-gradient-to-r from-contractColor-dark to-contractColor-light bg-clip-text text-transparent font-sans"
+        >
           Letschat
         </h1>
 
@@ -31,7 +42,7 @@ const Footer = () => {
             <a
               key={index}
               href={`#${menu.toLowerCase()}`}
-              className="text-gray-700 hover:text-[#FB8E0B] transition"
+              className="text-gray-700 hover:text-contractColor-dark transition"
             >
               {menu}
             </a>
@@ -45,28 +56,28 @@ const Footer = () => {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaInstagram className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
+            <FaInstagram className="text-gray-700 hover:text-contractColor-dark text-xl transition" />
           </a>
           <a
             href="https://facebook.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaFacebookF className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
+            <FaFacebookF className="text-gray-700 hover:text-contractColor-dark text-xl transition" />
           </a>
           <a
             href="https://twitter.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaTwitter className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
+            <FaTwitter className="text-gray-700 hover:text-contractColor-dark text-xl transition" />
           </a>
           <a
             href="https://github.com"
             target="_blank"
             rel="noopener noreferrer"
           >
-            <FaGithub className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
+            <FaGithub className="text-gray-700 hover:text-contractColor-dark text-xl transition" />
           </a>
         </div>
       </div>
@@ -80,10 +91,7 @@ const Footer = () => {
 
         {/* Privacy Links */}
         <div className="flex gap-4 mt-2 md:mt-0">
-          <a
-            href="/privacy-policy"
-            className="hover:text-[#FB8E0B] transition"
-          >
+          <a href="/privacy-policy" className="hover:text-[#FB8E0B] transition">
             Privacy Policy
           </a>
           <a

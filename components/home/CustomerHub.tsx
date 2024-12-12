@@ -14,9 +14,15 @@ const CustomerHub: React.FC = () => {
           />
         </div>
         <div className="h-full w-full md:w-3/4 lg:w-1/2">
-          <h1 className="font-semibold text-4xl md:text-3xl lg:text-4xl">
+          <h1 className="font-semibold text-4xl md:text-3xl lg:text-5xl font-kanit">
             Get direct contacts <br /> with your friends & family
           </h1>
+          <p className="my-5 text-[#383A47]">
+            Lorem ipsum Lorem ipsum dolor sit amet consectetur, adipisicing
+            elit. Vero quo repellat mollitia, voluptatibus labore atque
+            obcaecati porro eos fugit eaque eveniet perferendis excepturi eum
+            molestias aspernatur omnis laborum iusto aliquam!
+          </p>
           <p className="my-5 text-[#383A47]">
             Lorem ipsum Lorem ipsum dolor sit amet consectetur, adipisicing
             elit. Vero quo repellat mollitia, voluptatibus labore atque

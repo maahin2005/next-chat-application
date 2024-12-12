@@ -1,9 +1,16 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
+import { redirect } from "next/navigation";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  // const router = useRouter();
+
+  const handleRedirect = () => {
+    redirect(`/`); // Replace '/login' with the desired route
+  };
 
   // Array of menus
   const menus = ["Demos", "About", "Blogs", "Pages", "Contact"];
@@ -11,7 +18,10 @@ const Navbar = () => {
   return (
     <nav className="h-16 flex justify-center items-center relative">
       <div className="flex justify-between items-center w-4/5 h-full">
-        <h1 className="text-4xl font-semibold bg-gradient-to-r from-[#FD6003] to-[#FB8E0B] bg-clip-text text-transparent font-sans">
+        <h1
+          onClick={handleRedirect}
+          className="cursor-pointer text-4xl font-semibold bg-gradient-to-r from-contractColor-light to-contractColor-dark bg-clip-text text-transparent font-sans"
+        >
           Letschat
         </h1>
 
@@ -21,7 +31,7 @@ const Navbar = () => {
             <a
               key={index}
               href={`#${menu.toLowerCase()}`}
-              className="text-gray-700 hover:text-[#FB8E0B] transition"
+              className="text-gray-700 hover:text-contractColor-dark transition"
             >
               {menu}
             </a>
@@ -31,7 +41,7 @@ const Navbar = () => {
         {/* Login and Get Started buttons for Desktop */}
         <div className="hidden md:flex items-center gap-5">
           <h1 className="text-gray-700">Login</h1>
-          <button className="min-w-36 w-full p-2 h-full bg-[#FB8E0B] text-white rounded-md">
+          <button className="min-w-36 w-full p-2 h-full bg-contractColor-light hover:bg-contractColor-dark text-white rounded-md">
             Get Started free
           </button>
         </div>

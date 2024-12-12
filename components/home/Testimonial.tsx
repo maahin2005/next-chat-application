@@ -17,8 +17,7 @@ const Testimonials: React.FC = () => {
         "We had an incredible experience working with Mixland and were impressed they made such a big difference in only three weeks. Our team is so grateful for the wonderful improvements they made and their ability to get familiar with the concept so quickly.",
       name: "Wade Warren",
       position: "CEO, ABC Corporation",
-      image:
-        "https://via.placeholder.com/50", // Replace with actual image URL
+      image: "https://via.placeholder.com/50", // Replace with actual image URL
     },
     {
       quote: "Dependable, Responsive, Professional",
@@ -26,14 +25,13 @@ const Testimonials: React.FC = () => {
         "Fermin Apps has collaborated with Mixland team for several projects such as Photo Sharing Apps and Custom Social Networking Apps. The experience has been pleasant, professional, and exceeding our expectations. The team is always thinking beyond.",
       name: "Esther Howard",
       position: "CEO, ABC Corporation",
-      image:
-        "https://via.placeholder.com/50", // Replace with actual image URL
+      image: "https://via.placeholder.com/50", // Replace with actual image URL
     },
   ];
 
   return (
-    <div className="bg-orange-500 text-white my-16 p-10">
-      <h2 className="text-center text-3xl font-semibold mb-8">
+    <div className="bg-gradient-to-r from-contractColor-light to-contractColor-dark text-white p-10 py-16">
+      <h2 className="text-center text-5xl font-semibold mb-8 font-kanit">
         Our blessed client said about us{" "}
         <span role="img" aria-label="heart emoji">
           😍
