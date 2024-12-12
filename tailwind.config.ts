@@ -51,8 +51,15 @@ export default {
           "5": "hsl(var(--chart-5))",
         },
         contractColor: {
-          light: "#FB8E0B",
-          dark: "#FD6003",
+          // light: "#FB8E0B",
+          // dark: "#FD6003",
+          // light: "#1D77C3",
+          // dark: "#064172",
+          // light: "#E65E93",
+          // dark: "#D14F68",
+
+          light: "#07C5B9",
+          dark: "#05a9ad",
         },
       },
       borderRadius: {
