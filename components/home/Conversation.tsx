@@ -7,7 +7,7 @@ import { Button } from "../ui/button";
 
 const Conversation: React.FC = () => {
   return (
-    <div className="flex items-center w-full min-h-[400px] h-fit py-10">
+    <div className="flex items-center w-full min-h-[500px] h-fit py-20">
       <div className="w-4/5 h-full grid md:flex m-auto items-center justify-between">
         <div className="h-full w-full">
           <h1 className="text-5xl md:text-4xl lg:text-5xl font-bold">
