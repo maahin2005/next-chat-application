@@ -4,17 +4,29 @@ import { FaFacebookF, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
 const Footer = () => {
   // Array of menus
   const menus = ["About", "Feature", "Works", "Support"];
-  
+
   return (
-    <footer className="h-auto py-4 flex flex-col items-center">
-      <div className="flex justify-between items-center w-4/5 h-16">
+    <footer className="py-8 px-4 flex flex-col items-center bg-gray-50">
+      {/* Top Section */}
+      <div className="text-center mb-8">
+        <h3 className="text-2xl font-semibold mb-4">
+          Ready to grow your business?<br/>
+          Start with Apex, become faster every second
+        </h3>
+        <button className="px-6 py-3 bg-[#FB8E0B] text-white rounded-lg hover:bg-[#FB8E55] transition">
+          Start Chatting Now
+        </button>
+      </div>
+
+      {/* Middle Section */}
+      <div className="flex flex-wrap justify-between items-center w-full max-w-6xl mb-6 gap-6">
         {/* Logo */}
         <h1 className="text-4xl font-semibold bg-gradient-to-r from-[#FD6003] to-[#FB8E0B] bg-clip-text text-transparent font-sans">
           Letschat
         </h1>
-        
+
         {/* Center Menus */}
-        <div className="flex items-center gap-8">
+        <div className="flex items-center gap-8 flex-wrap justify-center">
           {menus.map((menu, index) => (
             <a
               key={index}
@@ -25,31 +37,49 @@ const Footer = () => {
             </a>
           ))}
         </div>
-        
+
         {/* Social Icons */}
-        <div className="flex items-center gap-5">
-          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer">
+        <div className="flex items-center gap-5 justify-center">
+          <a
+            href="https://instagram.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaInstagram className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
           </a>
-          <a href="https://facebook.com" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://facebook.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaFacebookF className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
           </a>
-          <a href="https://twitter.com" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://twitter.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaTwitter className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
           </a>
-          <a href="https://github.com" target="_blank" rel="noopener noreferrer">
+          <a
+            href="https://github.com"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <FaGithub className="text-gray-700 hover:text-[#FB8E0B] text-xl transition" />
           </a>
         </div>
       </div>
-      
+
       {/* Bottom Section */}
-      <div className="w-4/5 flex justify-between items-center mt-4 border-t pt-4 text-sm text-gray-500">
+      <div className="w-full max-w-6xl flex flex-wrap justify-between items-center border-t pt-4 text-sm text-gray-500">
         {/* Copyright */}
-        <p>© Copyright 2022, All Rights Reserved</p>
-        
+        <p className="text-center w-full md:w-auto">
+          © Copyright 2022, All Rights Reserved
+        </p>
+
         {/* Privacy Links */}
-        <div className="flex gap-4">
+        <div className="flex gap-4 mt-2 md:mt-0">
           <a
             href="/privacy-policy"
             className="hover:text-[#FB8E0B] transition"
