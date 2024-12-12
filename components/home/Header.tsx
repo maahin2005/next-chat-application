@@ -6,12 +6,14 @@ const LandingPage: React.FC = () => {
     <div className="flex flex-col lg:flex-row justify-between items-center p-6 lg:p-12">
       <div className="w-full lg:w-1/2 mb-6 lg:mb-0  lg:mr-20">
         <h1 className="text-3xl lg:text-4xl font-bold text-gray-800 mb-4">
+
           Start chatting with anyone, anytime, with our Chat App
         </h1>
         <p className="text-base lg:text-lg text-gray-500 mb-6">
-          Great software that allows you to chat from any place at any time without any interruption.
+          Great software that allows you to chat from any place at any time
+          without any interruption.
         </p>
-        <button className="px-6 py-3 bg-[#FB8E0B] text-white rounded-lg hover:bg-[#FB8E55]">
+        <button className="px-6 py-3 bg-contractColor-light text-white rounded-lg hover:bg-contractColor-dark">
           Start Chatting Now
         </button>
       </div>
