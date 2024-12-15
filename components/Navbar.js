@@ -1,16 +1,13 @@
 "use client";
 import React, { useState } from "react";
 import { AiOutlineClose, AiOutlineMenu } from "react-icons/ai";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // const router = useRouter();
 
-  const handleRedirect = () => {
-    redirect(`/`); // Replace '/login' with the desired route
-  };
 
   // Array of menus
   const menus = ["Demos", "About", "Blogs", "Pages", "Contact"];
@@ -18,12 +15,14 @@ const Navbar = () => {
   return (
     <nav className="h-16 flex justify-center items-center relative">
       <div className="flex justify-between items-center w-4/5 h-full">
+      <Link href="/">
         <h1
-          onClick={handleRedirect}
+         
           className="cursor-pointer text-4xl font-semibold bg-gradient-to-r from-contractColor-light to-contractColor-dark bg-clip-text text-transparent font-sans"
         >
           Letschat
         </h1>
+      </Link>
 
         {/* Center Menus for Desktop */}
         <div className="hidden md:flex items-center gap-8">
