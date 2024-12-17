@@ -1,5 +1,7 @@
+import Image from 'next/image';
 import React from 'react'
 import { FaBell,FaRegEnvelope,FaBellSlash } from "react-icons/fa";
+
 
 
 const MyNotificationsSec:React.FC=()=> {
@@ -17,9 +19,11 @@ const MyNotificationsSec:React.FC=()=> {
     {/* Example Notification */}
     <div className="flex justify-between items-center bg-white p-4 rounded-md shadow-sm">
       <div className="flex items-center gap-3">
-        <img
+        <Image
           src="https://via.placeholder.com/40"
           alt="User Avatar"
+          width={10}
+          height={10}
           className="w-10 h-10 rounded-full"
         />
         <div>
@@ -37,9 +41,11 @@ const MyNotificationsSec:React.FC=()=> {
     {/* Another Notification */}
     <div className="flex justify-between items-center bg-white p-4 rounded-md shadow-sm">
       <div className="flex items-center gap-3">
-        <img
+      <Image
           src="https://via.placeholder.com/40"
           alt="User Avatar"
+          width={10}
+          height={10}
           className="w-10 h-10 rounded-full"
         />
         <div>
@@ -57,9 +63,11 @@ const MyNotificationsSec:React.FC=()=> {
     {/* Another Notification */}
     <div className="flex justify-between items-center bg-white p-4 rounded-md shadow-sm">
       <div className="flex items-center gap-3">
-        <img
+      <Image
           src="https://via.placeholder.com/40"
           alt="User Avatar"
+          width={10}
+          height={10}
           className="w-10 h-10 rounded-full"
         />
         <div>

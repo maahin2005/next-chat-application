@@ -1,3 +1,4 @@
+import Image from 'next/image'
 import React from 'react'
 
 const MyBlockedUsersSec:React.FC=()=> {
@@ -12,9 +13,11 @@ const MyBlockedUsersSec:React.FC=()=> {
 
     <div className="flex justify-between items-center bg-white p-4 rounded-md shadow-sm">
       <div className="flex items-center gap-3">
-        <img
+        <Image
           src="https://via.placeholder.com/40"
           alt="User Avatar"
+          width={10}
+          height={10}
           className="w-10 h-10 rounded-full"
         />
         <p className="text-gray-800 font-semibold">John Doe</p>
