@@ -1,6 +1,7 @@
 import Image from "next/image";
 import React from "react";
 import headerImg from "@/resources/Images/Home/HeaderImg.svg";
+import Link from "next/link";
 
 const LandingPage: React.FC = () => {
   return (
@@ -15,17 +16,20 @@ const LandingPage: React.FC = () => {
             Great software that allows you to chat from any place at any time
             without any interruption.
           </p>
-          <button className="px-6 py-3 bg-contractColor-light text-white rounded-lg hover:bg-contractColor-dark">
-            Start Chatting Now
-          </button>
+          <Link href="/letschat">
+            <button className="px-6 py-3 bg-contractColor-light text-white rounded-lg hover:bg-contractColor-dark">
+              Start Chatting Now
+            </button>
+          </Link>
         </div>
         <div className="w-full md:w-1/2">
           <Image
-            src={headerImg} // Replace with your image URL
-            width={500} // Adjust the width as needed
-            height={500} // Adjust the height as needed
+            src={headerImg}
+            width={500}
+            height={500}
             alt="Chat App"
             className="m-auto"
+            priority
           />
         </div>
       </div>

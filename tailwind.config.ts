@@ -58,8 +58,21 @@ export default {
           // light: "#E65E93",
           // dark: "#D14F68",
 
-          light: "#07C5B9",
-          dark: "#05a9ad",
+          light: "#735DA5",
+          dark: "#00246B",
+        },
+        chatSection: {
+          bg: {
+            light: "#735DA5",
+            med: "#1f2937",
+            dark: "#0f172a",
+            // dark: "#0f172a",
+          },
+          font: {
+            light: "#64748b",
+            med: "",
+            dark: "#",
+          },
         },
       },
       borderRadius: {

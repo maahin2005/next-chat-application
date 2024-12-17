@@ -1,16 +1,13 @@
-"use client";
 
 import React from "react";
 import { FaFacebookF, FaInstagram, FaTwitter, FaGithub } from "react-icons/fa";
-import { redirect } from "next/navigation";
+import Link from "next/link";
+
 
 const Footer = () => {
   // Array of menus
   const menus = ["About", "Feature", "Works", "Support"];
 
-  const handleRedirect = () => {
-    redirect(`/`); // Replace '/login' with the desired route
-  };
 
   return (
     <footer className="py-8 px-4 min-h-[400px] flex flex-col items-center bg-gray-50">
@@ -29,12 +26,14 @@ const Footer = () => {
       {/* Middle Section */}
       <div className="flex flex-wrap justify-between items-center w-full max-w-6xl mb-6 gap-6">
         {/* Logo */}
+        <Link href="/">
         <h1
-          onClick={handleRedirect}
+          
           className="text-4xl cursor-pointer font-semibold bg-gradient-to-r from-contractColor-dark to-contractColor-light bg-clip-text text-transparent font-sans"
         >
           Letschat
         </h1>
+        </Link>
 
         {/* Center Menus */}
         <div className="flex items-center gap-8 flex-wrap justify-center">
