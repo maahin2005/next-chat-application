@@ -45,7 +45,7 @@ export const data = [
     id: 7,
     img: "https://randomuser.me/api/portraits/women/2.jpg",
     name: "Jane Smith",
-    lastMsg: "Let's catch up tomorrow!",
+    lastMsg: "Let's catch up tomorrow! Let's catch up tomorrow! Let's catch up tomorrow! Let's catch up tomorrow! Let's catch up tomorrow! Let's catch up tomorrow! Let's catch up tomorrow!",
     lastTime: "5:48 PM",
   },
   {

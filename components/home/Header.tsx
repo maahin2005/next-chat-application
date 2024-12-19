@@ -7,7 +7,7 @@ const LandingPage: React.FC = () => {
   return (
     <div className="w-full min-h-[80vh] flex justify-center items-center my-3">
       <div className="flex flex-col md:flex-row justify-between gap-10 items-center w-full md:w-4/5 m-auto">
-        <div className="w-4/5 m-auto md:w-1/2">
+        <div className="w-4/5 m-auto md:w-1/2 md:order-1 order-2">
           <h1 className="text-3xl lg:text-5xl text-gray-800 mb-4 font-kanit font-medium tracking-wide">
             Start chatting with anyone, anytime, <br />
             with Lets Chat
@@ -22,7 +22,7 @@ const LandingPage: React.FC = () => {
             </button>
           </Link>
         </div>
-        <div className="w-full md:w-1/2">
+        <div className="w-[90%] m-auto md:w-1/2 order-1 md:order-2">
           <Image
             src={headerImg}
             width={500}
