@@ -1,8 +1,11 @@
 "use client"
 import React, { useState } from "react";
+import { useSession, signIn, signOut } from "next-auth/react"
+
 
 const LogInPage: React.FC = () => {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
+    const { data: session } = useSession();
 
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
@@ -79,7 +82,9 @@ const LogInPage: React.FC = () => {
                         >
                             Submit
                         </button>
+
                     </form>
+                        <button onClick={() => signIn("google")}>Sign in</button>
                 </div>
             </div>
         </div>
