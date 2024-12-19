@@ -14,7 +14,11 @@ const Nav: React.FC = () => {
           </div>
         </Link>
 
-        <div className="flex gap-3 text-slate-700">
+        <div className="flex gap-3 text-slate-700 items-center">
+        <Link href="/letschat">
+           <h1 className="text-xl font-kanit text-blue-900 underline hover:no-underline">Letschat</h1>
+          
+        </Link>
           <IoNotificationsCircleSharp className="text-4xl" />
           <PiToggleLeftDuotone className="text-4xl" />
         </div>
