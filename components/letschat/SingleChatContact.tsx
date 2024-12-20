@@ -31,9 +31,11 @@ const SingleChatContact: React.FC<ChatContactProps> = ({
           />
         </div>
 
-        <div>
+        <div className="">
           <h1>{data.name}</h1>
-          <p className="text-slate-500 md:text-xs lg:text-sm">{data.lastMsg}</p>
+          <p className="text-slate-500 md:text-xs lg:text-sm w-[100px] line-clamp-1 overflow-hidden">
+            {data.lastMsg}
+          </p>
         </div>
       </div>
       <div className="justify-self-end">
