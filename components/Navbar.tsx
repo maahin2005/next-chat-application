@@ -30,7 +30,7 @@ export default function Navbar() {
 
         {/* Desktop Buttons */}
         <div className="hidden md:flex items-center gap-5">
-          <Link href="/login" className="text-gray-700">
+          <Link href="/auth/login" className="text-gray-700">
             Login
           </Link>
           <button className="min-w-36 w-full p-2 h-full bg-contractColor-light hover:bg-contractColor-dark text-white rounded-md">
