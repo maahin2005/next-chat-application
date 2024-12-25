@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
 import React, { useState } from "react";
-import { AiOutlineEye, AiOutlineEyeInvisible, AiOutlineWechatWork } from "react-icons/ai";
-import { useSession, signIn, signOut } from "next-auth/react"
-
+import { AiOutlineWechatWork } from "react-icons/ai";
+import { useSession, signIn, signOut } from "next-auth/react";
+import Link from "next/link";
+import GoogleButton from "react-google-button";
 
 const Login: React.FC = () => {
     const [isPasswordVisible, setPasswordVisible] = useState(false);
@@ -30,9 +30,9 @@ const Login: React.FC = () => {
             {/* Main Content */}
             <main className="flex-grow flex items-center justify-center">
                 <div className="max-w-4xl mx-auto p-4 w-full">
-                    <div className="bg-white shadow-md rounded-lg p-8 flex flex-col md:flex-row justify-around items-center gap-8">
+                    <div className="bg-white shadow-md rounded-lg p-8 flex flex-col md:flex-row items-center gap-8">
                         {/* Logo Section */}
-                        <div className="gap-2 text-4xl items-center font-kanit hidden md:flex">
+                        <div className="flex gap-2 text-4xl items-center font-kanit hidden md:flex">
                             <AiOutlineWechatWork className="text-blue-600" />
                             <h1>LetsChat.io</h1>
                         </div>
@@ -80,23 +80,62 @@ const Login: React.FC = () => {
                                             className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                                             onClick={togglePasswordVisibility}
                                         >
-                                            {isPasswordVisible ? (
-                                                <AiOutlineEye size={20} />
-                                            ) : (
-                                                <AiOutlineEyeInvisible size={20} />
-                                            )}
+                                            <i
+                                                className={
+                                                    isPasswordVisible
+                                                        ? "fas fa-eye"
+                                                        : "fas fa-eye-slash"
+                                                }
+                                            ></i>
                                         </span>
                                     </div>
                                 </div>
 
-                        {/* Submit Button */}
-                        <button
-                            type="submit"
-                            className="w-full bg-blue-600 text-white rounded-md py-2 font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                        >
-                            Submit
-                        </button>
-                    </form>
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    className="w-full bg-blue-600 text-white rounded-md py-2 font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                    Submit
+                                </button>
+                            </form>
+
+                            {/* Divider */}
+                            <div className="flex items-center my-4">
+                                <div className="w-full border-t border-gray-300"></div>
+                                <span className="px-2 text-gray-500 text-sm">or</span>
+                                <div className="w-full border-t border-gray-300"></div>
+                            </div>
+
+                            <div className="flex justify-center">
+                                <GoogleButton onClick={() => signIn('google')} />
+                            </div>
+
+                            {/* Links Below the Form */}
+                            <div className="mt-6 text-sm text-center space-y-2">
+                                <Link
+                                    href="/auth/signup"
+                                    className="text-blue-600 hover:underline transition duration-300"
+                                >
+                                    Sign Up
+                                </Link>
+                                <br />
+                                <Link
+                                    href="/forgot-password"
+                                    className="text-blue-600 hover:underline transition duration-300"
+                                >
+                                    Forgot Password?
+                                </Link>
+                                <br />
+                                <Link
+                                    href="/help"
+                                    className="text-blue-600 hover:underline transition duration-300"
+                                >
+                                    Need help getting started?
+                                </Link>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </main>
         </div>
