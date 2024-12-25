@@ -15,7 +15,7 @@ const nextConfig: NextConfig = {
         pathname: "/**", // Allows all paths under this domain
       },
     ],
-    domains: ["randomuser.me"],
+    domains: ["randomuser.me", "via.placeholder.com"],
   },
 };
 
