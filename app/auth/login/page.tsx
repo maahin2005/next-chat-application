@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useSession, signIn } from "next-auth/react";
@@ -8,7 +8,6 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GoogleButton from "react-google-button";
 import SendOTP from "@/components/otp/SendOTP";
-import { trusted } from "mongoose";
 
 const Login: React.FC = () => {
   const [isPasswordVisible, setPasswordVisible] = useState(true);
@@ -16,16 +15,9 @@ const Login: React.FC = () => {
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
-    console.log(isPasswordVisible)
+    console.log(isPasswordVisible);
     setPasswordVisible(!isPasswordVisible);
   };
-
-  // Redirect if user is authenticated
-  useEffect(() => {
-    if (status === "authenticated") {
-      router.push("/dashboard");
-    }
-  }, [status])
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
