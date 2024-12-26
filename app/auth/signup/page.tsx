@@ -36,7 +36,7 @@ const Signup: React.FC = () => {
                 <div className="max-w-4xl mx-auto p-4 w-full">
                     <div className="bg-white shadow-md rounded-lg p-8 flex flex-col md:flex-row items-center gap-8">
                         {/* Logo Section */}
-                        <div className="flex gap-2 text-4xl items-center font-kanit hidden md:flex">
+                        <div className="gap-2 text-4xl items-center font-kanit hidden md:flex">
                             <AiOutlineWechatWork className="text-blue-600" />
                             <h1>LetsChat.io</h1>
                         </div>
