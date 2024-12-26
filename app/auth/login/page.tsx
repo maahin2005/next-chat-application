@@ -1,19 +1,31 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
+import { useSession, signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GoogleButton from "react-google-button";
 import SendOTP from "@/components/otp/SendOTP";
+import { trusted } from "mongoose";
 
 const Login: React.FC = () => {
-  const [isPasswordVisible, setPasswordVisible] = useState(false);
-  const { data: session } = useSession();
+  const [isPasswordVisible, setPasswordVisible] = useState(true);
+  const { data: session, status } = useSession();
+  const router = useRouter();
 
   const togglePasswordVisibility = () => {
-    setPasswordVisible((prev) => !prev);
+    console.log(isPasswordVisible)
+    setPasswordVisible(!isPasswordVisible);
   };
+
+  // Redirect if user is authenticated
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.push("/dashboard");
+    }
+  }, [status])
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
@@ -81,11 +93,7 @@ const Login: React.FC = () => {
                       className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                       onClick={togglePasswordVisibility}
                     >
-                      <i
-                        className={
-                          isPasswordVisible ? "fas fa-eye" : "fas fa-eye-slash"
-                        }
-                      ></i>
+                      {isPasswordVisible ? <FiEye /> : <FiEyeOff />}
                     </span>
                   </div>
                 </div>
