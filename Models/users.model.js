@@ -20,6 +20,7 @@ const userSchema = new mongoose.Schema(
       type: String,
       unique: true,
       lowercase: true,
+      required: true,
     },
     mobileNo: {
       type: String,

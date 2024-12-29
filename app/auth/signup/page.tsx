@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import GoogleButton from "react-google-button";
 import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
 import { setBasicInfo } from "@/lib/store/features/user/userSlice";
+import axios from "axios";
 const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URI;
 console.log("backendUrl:", backendUrl)
 
@@ -42,6 +43,19 @@ const Signup: React.FC = () => {
         }));
     };
 
+    const signupTheUser = async(obj:any) => {
+        try {
+            obj.name = "Angel"
+           console.log("OBJ: ", obj)
+            const resp = await axios.post("/api/users/signup",obj);
+
+            console.log("RESP: ", resp);
+            
+        } catch (error) {
+            console.log("ERROR: " + error)
+        }
+    }
+
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
         setError(null);
@@ -61,10 +75,14 @@ const Signup: React.FC = () => {
         }
 
         try {
+            signupTheUser(formData);
+            console.log("After function call")
             dispatch(setBasicInfo(formData))
-            router.push("/dashboard")
-        } catch (error) {
+            console.log("After function dispatch")
 
+            // router.push("/dashboard")
+        } catch (error) {
+            console.log("ERROR: ", error)
         }
     };
 
