@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useSession, signIn } from "next-auth/react";
@@ -18,6 +18,7 @@ const Login: React.FC = () => {
     console.log(isPasswordVisible);
     setPasswordVisible(!isPasswordVisible);
   };
+  useEffect(()=>{console.log("session: ", session)},[session])
 
   return (
     <div className="bg-gray-50 min-h-screen flex flex-col">
