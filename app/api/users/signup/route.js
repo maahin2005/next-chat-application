@@ -25,6 +25,8 @@ export async function POST(req) {
       myFriends,
       notInterestedRecommendations,
       role,
+      incomingFriendReq,
+      sentFriendReq,
     } = await req.json();
 
     const data = await UserModel.create({
@@ -46,6 +48,8 @@ export async function POST(req) {
       myFriends,
       notInterestedRecommendations,
       role,
+      incomingFriendReq,
+      sentFriendReq,
     });
     return NextResponse.json(
       { success: true, data: data, msg: "Hey! Welcome to Letschat." },

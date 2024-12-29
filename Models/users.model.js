@@ -70,6 +70,16 @@ const userSchema = new mongoose.Schema(
       ref: "User",
       default: [],
     },
+    incomingFriendReq: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
+    sentFriendReq: {
+      type: [mongoose.Schema.Types.ObjectId],
+      ref: "User",
+      default: [],
+    },
     notInterestedRecommendations: {
       type: [mongoose.Schema.Types.ObjectId],
       ref: "User",

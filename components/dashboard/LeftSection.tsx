@@ -10,13 +10,13 @@ const LeftSection: React.FC = () => {
     <div className="relative h-full">
       <h1 className="text-slate-500 font-kanit my-5 text-sm flex items-center gap-2">
         {" "}
-        <RiContactsFill /> MY CONTACTS
+        <RiContactsFill /> MY FRIENDS
       </h1>
       <div className="w-full my-2">
         <div className="flex justify-center items-center bg-slate-100 px-3 m-auto rounded-md">
           <FaMagnifyingGlass />
           <input
-            placeholder="search contacts"
+            placeholder="search friend"
             className="w-[90%] m-auto p-2 bg-transparent outline-none"
           />
         </div>
