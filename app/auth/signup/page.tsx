@@ -2,13 +2,29 @@
 
 import React, { useState } from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
-import { signIn } from "next-auth/react";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import GoogleButton from "react-google-button";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { setBasicInfo } from "@/lib/store/features/user/userSlice";
+const backendUrl = process.env.NEXT_PUBLIC_BACKEND_URI;
+console.log("backendUrl:", backendUrl)
 
 const Signup: React.FC = () => {
+    const router = useRouter()
+    const dispatch = useAppDispatch()
+    const user = useAppSelector(state => state.user)
+    console.log("user:", user)
+    const [formData, setFormData] = useState({
+        username: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+    });
     const [isPasswordVisible, setPasswordVisible] = useState(false);
     const [isConfirmPasswordVisible, setConfirmPasswordVisible] = useState(false);
+    const [error, setError] = useState<string | null>(null);
 
     const togglePasswordVisibility = () => {
         setPasswordVisible((prev) => !prev);
@@ -18,12 +34,45 @@ const Signup: React.FC = () => {
         setConfirmPasswordVisible((prev) => !prev);
     };
 
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { id, value } = e.target;
+        setFormData((prev) => ({
+            ...prev,
+            [id]: value,
+        }));
+    };
+
+    const handleSignup = async (e: React.FormEvent) => {
+        e.preventDefault();
+        setError(null);
+        console.log("started signup process...")
+
+        const { username, email, password, confirmPassword } = formData;
+        console.log(formData)
+
+        // Basic validation
+        if (!username || !email || !password || !confirmPassword) {
+            setError("All fields are required.");
+            return;
+        }
+        if (password !== confirmPassword) {
+            setError("Passwords do not match.");
+            return;
+        }
+
+        try {
+            dispatch(setBasicInfo(formData))
+            router.push("/dashboard")
+        } catch (error) {
+
+        }
+    };
+
     return (
         <div className="bg-gray-50 min-h-screen flex flex-col">
             {/* Header */}
             <header className="bg-white shadow-md py-4">
                 <div className="container mx-auto flex justify-center px-4 md:px-8">
-                    {/* Logo */}
                     <div className="flex items-center gap-2 text-2xl font-semibold text-gray-800 font-kanit">
                         <AiOutlineWechatWork className="text-blue-600" />
                         <h1>LetsChat.io</h1>
@@ -35,7 +84,6 @@ const Signup: React.FC = () => {
             <main className="flex-grow flex items-center justify-center">
                 <div className="max-w-4xl mx-auto p-4 w-full">
                     <div className="bg-white shadow-md rounded-lg p-8 flex flex-col md:flex-row items-center gap-8">
-                        {/* Logo Section */}
                         <div className="gap-2 text-4xl items-center font-kanit hidden md:flex">
                             <AiOutlineWechatWork className="text-blue-600" />
                             <h1>LetsChat.io</h1>
@@ -46,7 +94,10 @@ const Signup: React.FC = () => {
                             <div className="text-4xl font-bold text-gray-800 mb-6 text-center">
                                 Sign Up<span className="text-blue-600">#</span>
                             </div>
-                            <form className="space-y-4">
+                            <form onSubmit={handleSignup} className="space-y-4">
+                                {/* Error Message */}
+                                {error && <div className="text-red-600 text-sm">{error}</div>}
+
                                 {/* Username Input */}
                                 <div>
                                     <label
@@ -60,6 +111,8 @@ const Signup: React.FC = () => {
                                             type="text"
                                             id="username"
                                             placeholder="Username"
+                                            value={formData.username}
+                                            onChange={handleInputChange}
                                             className="w-full border-b border-gray-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
                                         />
                                     </div>
@@ -78,6 +131,8 @@ const Signup: React.FC = () => {
                                             type="email"
                                             id="email"
                                             placeholder="Email"
+                                            value={formData.email}
+                                            onChange={handleInputChange}
                                             className="w-full border-b border-gray-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
                                         />
                                     </div>
@@ -96,19 +151,15 @@ const Signup: React.FC = () => {
                                             type={isPasswordVisible ? "text" : "password"}
                                             id="password"
                                             placeholder="Password"
+                                            value={formData.password}
+                                            onChange={handleInputChange}
                                             className="w-full border-b border-gray-300 bg-transparent px-2 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
                                         />
                                         <span
                                             className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                                             onClick={togglePasswordVisibility}
                                         >
-                                            <i
-                                                className={
-                                                    isPasswordVisible
-                                                        ? "fas fa-eye"
-                                                        : "fas fa-eye-slash"
-                                                }
-                                            ></i>
+                                            {isPasswordVisible ? <FiEye /> : <FiEyeOff />}
                                         </span>
                                     </div>
                                 </div>
@@ -116,7 +167,7 @@ const Signup: React.FC = () => {
                                 {/* Confirm Password Input */}
                                 <div>
                                     <label
-                                        htmlFor="confirm-password"
+                                        htmlFor="confirmPassword"
                                         className="block text-gray-700 text-sm font-medium"
                                     >
                                         Confirm Password
@@ -124,21 +175,17 @@ const Signup: React.FC = () => {
                                     <div className="relative">
                                         <input
                                             type={isConfirmPasswordVisible ? "text" : "password"}
-                                            id="confirm-password"
+                                            id="confirmPassword"
                                             placeholder="Confirm Password"
+                                            value={formData.confirmPassword}
+                                            onChange={handleInputChange}
                                             className="w-full border-b border-gray-300 bg-transparent px-2 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
                                         />
                                         <span
                                             className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
                                             onClick={toggleConfirmPasswordVisibility}
                                         >
-                                            <i
-                                                className={
-                                                    isConfirmPasswordVisible
-                                                        ? "fas fa-eye"
-                                                        : "fas fa-eye-slash"
-                                                }
-                                            ></i>
+                                            {isConfirmPasswordVisible ? <FiEye /> : <FiEyeOff />}
                                         </span>
                                     </div>
                                 </div>
@@ -160,7 +207,7 @@ const Signup: React.FC = () => {
                             </div>
 
                             <div className="flex justify-center">
-                                <GoogleButton onClick={() => signIn('google')} />
+                                <GoogleButton onClick={() => console.log("Google Login")} />
                             </div>
 
                             {/* Links Below the Form */}
@@ -170,13 +217,6 @@ const Signup: React.FC = () => {
                                     className="text-blue-600 hover:underline transition duration-300"
                                 >
                                     Already have an account? Login
-                                </Link>
-                                <br />
-                                <Link
-                                    href="/help"
-                                    className="text-blue-600 hover:underline transition duration-300"
-                                >
-                                    Need help getting started?
                                 </Link>
                             </div>
                         </div>

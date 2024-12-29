@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { useSession, signIn } from "next-auth/react";
+import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import GoogleButton from "react-google-button";
@@ -12,6 +12,7 @@ import SendOTP from "@/components/otp/SendOTP";
 const Login: React.FC = () => {
   const [isPasswordVisible, setPasswordVisible] = useState(true);
   const { data: session, status } = useSession();
+  console.log("session:", session, "status:", status)
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
@@ -109,6 +110,7 @@ const Login: React.FC = () => {
 
               <div className="flex justify-center">
                 <GoogleButton onClick={() => signIn("google")} />
+                  <button onClick={()=> signOut()}>Sign Out</button>
               </div>
 
               {/* Links Below the Form */}
