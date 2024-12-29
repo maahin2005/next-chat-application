@@ -112,3 +112,48 @@ return session;
 });
 
 export { handler as GET, handler as POST };
+
+
+### Good method
+
+`
+import { connectDB } from "@/lib/mongoose";
+import { NextResponse } from "next/server";
+import UserModel from "@/Models/users.model";
+
+export async function GET(req) {
+  try {
+    await connectDB();
+    const { searchParams } = new URL(req.url);
+    const username = searchParams.get("username");
+
+    if (!username) {
+      return NextResponse.json(
+        { error: "Username is required" },
+        { status: 400 }
+      );
+    }
+
+    // Check if the username exists in the database
+    const user = await UserModel.findOne({ username });
+
+    if (user) {
+      return NextResponse.json({ exists: true , 
+        canTaken: false,
+         msg:"Oops! This one's already taken. Try something unique and awesome!"}, { status: 200 });
+    }
+
+    return NextResponse.json({ exists: false , canTaken: true,
+        msg:"Awesome! This username is yours to claim."
+    }, { status: 200 });
+  } catch (error) {
+    console.error("Error checking username:", error);
+    return NextResponse.json(
+      { error: "Internal Server Error" },
+      { status: 500 }
+    );
+  }
+}
+
+
+`
