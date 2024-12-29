@@ -4,7 +4,7 @@ import React from "react";
 
 function page() {
   return (
-    <div className="min-h-screen h-fit md:h-screen flex flex-col">
+    <div className="h-fit md:h-screen flex flex-col">
       <div className="h-16">
         <Nav />
       </div>

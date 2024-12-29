@@ -31,6 +31,13 @@ const MyProfileSec: React.FC = () => {
         </Dialog>
       </div>
       <MyProfileArea />
+      <div className="border-e-2 border-b-2 border-slate-100 p-3 rounded-xl">
+        <h1 className="text-2xl font-kanit">BIO</h1>
+        <p className="text-slate-600 text-lg font-spaceGro py-1">
+          Lorem ipsum dolor sit amet, consectetur Lorem ipsum dolor sit amet,
+          consectetur Lorem ipsum dolor sit amet, consectetur
+        </p>
+      </div>
     </div>
   );
 };

@@ -35,7 +35,7 @@
 "role":"Creater"
 }
 
-Nobara token -> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NjQyYmU4M2IwMDczZTJlNWFhMTAyOCIsInVzZXJuYW1lIjoibm9iYXJhQDEyMyIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTczNDc4NDE0MCwiZXhwIjoxNzM0ODcwNTQwfQ.x-fyDuHJU89KjDuqbNGJFYnrIRt0XcfI0rp_4mKPEBk
+Nobara token ->eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NzE3ZTc5YjdlOTIxMTljYTkwY2JhNyIsInVzZXJuYW1lIjoibm9iYXJhQDEyMyIsInJvbGUiOiJBZG1pbiIsImlhdCI6MTczNTQ5MTIxMSwiZXhwIjoxNzM1NTc3NjExfQ.Y-W_ObkOsCN7i7jXIlN2fybkV1mjxSojsmrqmVcmRGc
 
 sukuna token -> eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NjUxNTVlNzEwMDQyYzdlMjgzYTNkMyIsInVzZXJuYW1lIjoic3VrdW5hQDEyMyIsInJvbGUiOiJVc2VyIiwiaWF0IjoxNzM0Njc3OTQwLCJleHAiOjE3MzQ3NjQzNDB9.S1MsASz0kZoy2h-pdUP-yZO-8Zy2qt7cXIbIbtkJpYE
 
@@ -113,7 +113,6 @@ return session;
 
 export { handler as GET, handler as POST };
 
-
 ### Good method
 
 `
@@ -122,10 +121,10 @@ import { NextResponse } from "next/server";
 import UserModel from "@/Models/users.model";
 
 export async function GET(req) {
-  try {
-    await connectDB();
-    const { searchParams } = new URL(req.url);
-    const username = searchParams.get("username");
+try {
+await connectDB();
+const { searchParams } = new URL(req.url);
+const username = searchParams.get("username");
 
     if (!username) {
       return NextResponse.json(
@@ -138,7 +137,7 @@ export async function GET(req) {
     const user = await UserModel.findOne({ username });
 
     if (user) {
-      return NextResponse.json({ exists: true , 
+      return NextResponse.json({ exists: true ,
         canTaken: false,
          msg:"Oops! This one's already taken. Try something unique and awesome!"}, { status: 200 });
     }
@@ -146,14 +145,14 @@ export async function GET(req) {
     return NextResponse.json({ exists: false , canTaken: true,
         msg:"Awesome! This username is yours to claim."
     }, { status: 200 });
-  } catch (error) {
-    console.error("Error checking username:", error);
-    return NextResponse.json(
-      { error: "Internal Server Error" },
-      { status: 500 }
-    );
-  }
-}
 
+} catch (error) {
+console.error("Error checking username:", error);
+return NextResponse.json(
+{ error: "Internal Server Error" },
+{ status: 500 }
+);
+}
+}
 
 `

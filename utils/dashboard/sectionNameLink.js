@@ -28,7 +28,7 @@ export const data = [
   },
   {
     id: 4,
-    name: "Star Contacts",
+    name: "Star Friends",
     link: "star-contacts",
     content: <MyStarredContectsSec />,
     icon: <RiUserStarLine className="text-lg" />,
@@ -47,10 +47,10 @@ export const data = [
     content: <MySecuritySec />,
     icon: <MdSecurity className="text-lg" />,
   },
- 
+
   {
     id: 6,
-    name: "Blocked Users",
+    name: "Blocked",
     link: "blocked-users",
     content: <MyBlockedUsersSec />,
     icon: <MdBlock className="text-lg" />,

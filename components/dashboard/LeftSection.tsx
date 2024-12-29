@@ -7,7 +7,7 @@ import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const LeftSection: React.FC = () => {
   return (
-    <div className="relative h-full">
+    <div className="relative h-full px-10 md:px-0">
       <h1 className="text-slate-500 font-kanit my-5 text-sm flex items-center gap-2">
         {" "}
         <RiContactsFill /> MY FRIENDS
@@ -25,7 +25,7 @@ const LeftSection: React.FC = () => {
         <ContactList />
       </div>
 
-      <div className="absolute bottom-0 w-full">
+      <div className="md:absolute bottom-0 w-full my-10 md:my-0">
         <button className="bg-blue-500 flex items-center justify-center gap-3 text-white text-semibold rounded-3xl h-12 w-full">
           Create Contact <FaPlus />
         </button>
