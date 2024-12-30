@@ -1,9 +1,11 @@
-import React from 'react'
+import React from "react";
 
-const MyStarredContectsSec:React.FC=()=> {
+const MyStarredContectsSec: React.FC = () => {
   return (
-    <div>MyStarredContectsSec</div>
-  )
-}
+    <div>
+      <h1 className="text-2xl font-kanit tracking-wide">Star Friends</h1>
+    </div>
+  );
+};
 
-export default MyStarredContectsSec
+export default MyStarredContectsSec;

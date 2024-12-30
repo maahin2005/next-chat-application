@@ -4,7 +4,7 @@ import { jwtVerify } from "jose";
 export async function compareUserIdForCRUD(req) {
   try {
     const token =
-      req.cookies.get("authToken") ||
+      req.cookies.get("token") ||
       req.headers.get("authorization")?.split(" ")[1];
 
     if (!token) {
@@ -31,7 +31,7 @@ export async function compareUserIdForCRUD(req) {
     const id = match?.pathname.groups.id;
 
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token.value ?? token, secret);
     console.log("req.nextUrl: " + req.nextUrl);
 
     if (!payload) {

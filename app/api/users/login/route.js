@@ -38,16 +38,36 @@ export async function POST(req) {
       );
     }
 
-    const token = jwt.sign(
-      { id: user._id, username: user.username, role: user.role },
-      process.env.JWT_SECRET,
-      { expiresIn: "24h" }
-    );
+    const userData = {
+      userId: user._id,
+      username: user.username,
+      role: user.role,
+      name: user.name,
+    };
 
-    return NextResponse.json(
-      { success: true, msg: `Glad to see you again! ${user.name}`, token },
+    const token = jwt.sign(userData, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
+
+    const response = NextResponse.json(
+      { success: true, msg: `Glad to see you again! ${user.name}` },
       { status: 200 }
     );
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      path: "/",
+    });
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     return NextResponse.json(
       {

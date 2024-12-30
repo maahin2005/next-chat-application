@@ -1,15 +1,15 @@
 export function addToDB(user, fieldName, userId) {
-  if (!user[fieldName].includes(userId)) {
-    user[fieldName].push(userId);
+  const isUserIdPresent = user[fieldName].some(
+    (item) => item.userId === userId
+  );
+
+  // If not present, add it
+  if (!isUserIdPresent) {
+    user[fieldName].push({ userId });
   }
 }
 
 export function removeFromDB(user, fieldName, userId) {
-  if (user[fieldName].includes(userId)) {
-    const newArrFrnds = user[fieldName].filter(
-      (friend) => !friend.equals(userId)
-    );
-
-    user[fieldName] = newArrFrnds;
-  }
+  // Filter out the object containing the specified userId
+  user[fieldName] = user[fieldName].filter((item) => item.userId !== userId);
 }
