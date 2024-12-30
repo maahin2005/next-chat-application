@@ -1,6 +1,6 @@
 import { connectDB } from "@/lib/mongoose";
 import UserModel from "@/Models/users.model";
-import { NextResponse } from "next/server"; // Replace with the correct path to your User model
+import { NextResponse } from "next/server";
 
 export async function POST(req: Request) {
   await connectDB();
@@ -8,8 +8,9 @@ export async function POST(req: Request) {
   const { userId } = await req.json();
 
   try {
-    // Find the user by their userId and get the `myFriends` field
-    const user = await UserModel.findById(userId).select("myFriends");
+    const user = await UserModel.findById({ _id: userId }).select(
+      "sentFriendReq"
+    );
 
     if (!user) {
       return NextResponse.json(
@@ -21,12 +22,13 @@ export async function POST(req: Request) {
       );
     }
 
-    const friendIds = user.myFriends.map((req: any) => req.userId);
+    const friendIds = user.sentFriendReq.map((req: any) => req.userId);
 
-    // Fetch details of all friends using the friend IDs
-    const friends = await UserModel.find({ _id: { $in: friendIds } }).sort({
-      name: 1,
-    });
+    const friends = await UserModel.find({
+      _id: { $in: friendIds },
+    })
+      .select("name email") // Adjust fields as needed
+      .sort({ name: 1 });
 
     return NextResponse.json(
       {
@@ -40,7 +42,7 @@ export async function POST(req: Request) {
     return NextResponse.json(
       {
         success: false,
-        msg: "Failed to get friends",
+        msg: "Failed to get Data",
         error: error.message,
       },
       { status: 500 }

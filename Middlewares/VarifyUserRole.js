@@ -4,13 +4,12 @@ import { jwtVerify } from "jose";
 
 export async function verifyUserRole(req) {
   try {
-    const token =
-      req.cookies.get("authToken") ||
-      req.headers.get("authorization")?.split(" ")[1];
+    const token = req.cookies.get("token") || req.cookies.get("refreshToken");
+    req.headers.get("authorization")?.split(" ")[1];
 
     if (!token) {
       return NextResponse.json(
-        { error: "Unauthorized: Token is missing" },
+        { error: "Unauthorized: Token is missing", success: false },
         { status: 401 }
       );
     }
@@ -18,11 +17,11 @@ export async function verifyUserRole(req) {
     // Verify the token
     // const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token, secret);
+    const { payload } = await jwtVerify(token.value ?? token, secret);
 
     if (!payload) {
       return NextResponse.json(
-        { error: "Unauthorized: Invalid token" },
+        { error: "Unauthorized: Invalid token", success: false },
         { status: 401 }
       );
     }
@@ -35,7 +34,9 @@ export async function verifyUserRole(req) {
       return NextResponse.json(
         {
           error:
-            "Forbidden: You do not have access to this content - " + userRole,
+            "Forbidden: You do not have access to this content - Your Role is " +
+            userRole,
+          success: false,
         },
         { status: 403 }
       );
@@ -45,7 +46,11 @@ export async function verifyUserRole(req) {
     return NextResponse.next();
   } catch (error) {
     return NextResponse.json(
-      { error: "Internal Server Error", details: error.message },
+      {
+        error: "Internal Server Error",
+        details: error.message,
+        success: false,
+      },
       { status: 500 }
     );
   }

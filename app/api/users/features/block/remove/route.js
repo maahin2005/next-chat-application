@@ -4,35 +4,35 @@ import UserModel from "@/Models/users.model";
 import mongoose from "mongoose";
 
 export async function PATCH(req) {
+  // Connect to the database
   await connectDB();
 
-  const body = await req.json();
-
-  const { id, removeFromBlock } = body;
-
-  if (!id || !removeFromBlock) {
-    return NextResponse.json(
-      {
-        success: false,
-        msg: "Missing required fields: id and removeFromBlock",
-      },
-      { status: 400 }
-    );
-  }
-
-  if (
-    !mongoose.Types.ObjectId.isValid(id) ||
-    !mongoose.Types.ObjectId.isValid(removeFromBlock)
-  ) {
-    return NextResponse.json(
-      { success: false, msg: "Invalid ObjectId format" },
-      { status: 400 }
-    );
-  }
-
   try {
-    const friendId = new mongoose.Types.ObjectId(removeFromBlock);
+    const body = await req.json();
+    const { id, removeFromBlock } = body;
 
+    // Validate request data
+    if (!id || !removeFromBlock) {
+      return NextResponse.json(
+        {
+          success: false,
+          msg: "Missing required fields: id and removeFromBlock",
+        },
+        { status: 400 }
+      );
+    }
+
+    if (
+      !mongoose.Types.ObjectId.isValid(id) ||
+      !mongoose.Types.ObjectId.isValid(removeFromBlock)
+    ) {
+      return NextResponse.json(
+        { success: false, msg: "Invalid ObjectId format" },
+        { status: 400 }
+      );
+    }
+
+    // Fetch the user by ID
     const user = await UserModel.findById(id);
     if (!user) {
       return NextResponse.json(
@@ -41,31 +41,35 @@ export async function PATCH(req) {
       );
     }
 
-    const index = user.blockedUsers.findIndex((friend) =>
-      friend.equals(friendId)
+    // Check if the friend exists in the blockedUsers list
+    const blockedIndex = user.blockedUsers.findIndex(
+      (blocked) => blocked.userId === removeFromBlock
     );
 
-    if (index === -1) {
+    if (blockedIndex === -1) {
       return NextResponse.json(
-        { success: false, msg: "Friend not found in the star list" },
+        { success: false, msg: "User not found in the block list" },
         { status: 404 }
       );
     }
 
-    user.blockedUsers.splice(index, 1);
+    // Remove the user from the blockedUsers list
+    user.blockedUsers.splice(blockedIndex, 1);
 
-    if (user.isModified("blockedUsers")) {
-      await user.save();
-    }
+    // Save the updated user document
+    await user.save();
 
-    return NextResponse.json({ success: true, data: user }, { status: 200 });
+    return NextResponse.json(
+      { success: true, msg: "User removed from block list", data: user },
+      { status: 200 }
+    );
   } catch (error) {
-    console.error("Error :", error.message);
+    console.error("Error:", error.message);
 
     return NextResponse.json(
       {
         success: false,
-        msg: "Failed to remove friend from Block list",
+        msg: "Failed to remove user from block list",
         error: error.message,
       },
       { status: 500 }

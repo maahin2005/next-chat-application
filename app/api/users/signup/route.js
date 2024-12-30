@@ -1,8 +1,8 @@
 import { connectDB } from "@/lib/mongoose";
 import { NextResponse } from "next/server";
 import UserModel from "@/Models/users.model";
+import jwt from "jsonwebtoken"; // For generating the JWT token
 
-// simple first
 export async function POST(req) {
   try {
     await connectDB();
@@ -51,10 +51,37 @@ export async function POST(req) {
       incomingFriendReq,
       sentFriendReq,
     });
-    return NextResponse.json(
+
+    const userData = {
+      userId: data._id,
+      username: data.username,
+      role: data.role,
+      name: data.name,
+    };
+
+    const token = jwt.sign(userData, process.env.JWT_SECRET, {
+      expiresIn: "24h",
+    });
+
+    const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: "7d",
+    });
+
+    const response = NextResponse.json(
       { success: true, data: data, msg: "Hey! Welcome to Letschat." },
       { status: 201 }
     );
+
+    response.cookies.set("token", token, {
+      httpOnly: true,
+      path: "/",
+    });
+    response.cookies.set("refreshToken", refreshToken, {
+      httpOnly: true,
+      path: "/",
+    });
+
+    return response;
   } catch (error) {
     console.error(error.message);
     return NextResponse.json(

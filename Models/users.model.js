@@ -53,13 +53,21 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     starFriends: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          starredAt: { type: String, default: () => formatDate(new Date()) },
+        },
+      ],
       default: [],
     },
     blockedUsers: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          blckedAt: { type: String, default: () => formatDate(new Date()) },
+        },
+      ],
       default: [],
     },
     interests: {
@@ -67,23 +75,42 @@ const userSchema = new mongoose.Schema(
       default: [],
     },
     myFriends: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          friendsAt: { type: String, default: () => formatDate(new Date()) },
+        },
+      ],
       default: [],
     },
     incomingFriendReq: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          receivedAt: { type: String, default: () => formatDate(new Date()) },
+        },
+      ],
       default: [],
     },
     sentFriendReq: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          sentAt: { type: String, default: () => formatDate(new Date()) },
+        },
+      ],
       default: [],
     },
     notInterestedRecommendations: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
+      type: [
+        {
+          userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+          notInterestedAt: {
+            type: String,
+            default: () => formatDate(new Date()),
+          },
+        },
+      ],
       default: [],
     },
     role: {
@@ -92,8 +119,21 @@ const userSchema = new mongoose.Schema(
       default: "User",
     },
   },
-  { timestamps: true }
+  { timestamps: true, versionKey: "version" }
 );
+
+function formatDate(date) {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
+  };
+  return date.toLocaleString("en-US", options);
+}
 
 userSchema.pre("save", async function (next) {
   if (!this.isModified("password")) return next(); // Skip hashing if password hasn't changed
