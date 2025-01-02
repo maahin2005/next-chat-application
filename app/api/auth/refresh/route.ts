@@ -2,20 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"; // For generating the JWT token
 
 export async function POST(req: NextRequest) {
-  const refreshToken = req.cookies.get("refreshToken")?.value;
+  const token = req.cookies.get("token")?.value;
 
-  if (!refreshToken) {
-    return NextResponse.json(
-      { error: "No refresh token provided" },
-      { status: 401 }
-    );
+  if (!token) {
+    return NextResponse.json({ error: "No token provided" }, { status: 401 });
   }
 
   try {
-    const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET!);
+    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
 
     const newAccessToken = jwt.sign(decoded, process.env.JWT_SECRET!, {
-      expiresIn: "15m",
+      expiresIn: "24h",
     });
 
     const response = NextResponse.json({ success: true });
@@ -27,7 +24,7 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error: any) {
     return NextResponse.json(
-      { error: "Invalid refresh token", success: false, msg: error.message },
+      { error: "Invalid token", success: false, msg: error.message },
       { status: 403 }
     );
   }

@@ -4,8 +4,9 @@ import { jwtVerify } from "jose";
 
 export async function verifyUserRole(req) {
   try {
-    const token = req.cookies.get("token") || req.cookies.get("refreshToken");
-    req.headers.get("authorization")?.split(" ")[1];
+    const token =
+      req.cookies.get("token") ||
+      req.headers.get("authorization")?.split(" ")[1];
 
     if (!token) {
       return NextResponse.json(
@@ -15,7 +16,6 @@ export async function verifyUserRole(req) {
     }
 
     // Verify the token
-    // const decoded = jwt.verify(token, process.env.JWT_SECRET);
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
     const { payload } = await jwtVerify(token.value ?? token, secret);
 

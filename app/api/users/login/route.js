@@ -46,10 +46,6 @@ export async function POST(req) {
     };
 
     const token = jwt.sign(userData, process.env.JWT_SECRET, {
-      expiresIn: "24h",
-    });
-
-    const refreshToken = jwt.sign(userData, process.env.JWT_REFRESH_SECRET, {
       expiresIn: "7d",
     });
 
@@ -59,10 +55,6 @@ export async function POST(req) {
     );
 
     response.cookies.set("token", token, {
-      httpOnly: true,
-      path: "/",
-    });
-    response.cookies.set("refreshToken", refreshToken, {
       httpOnly: true,
       path: "/",
     });
