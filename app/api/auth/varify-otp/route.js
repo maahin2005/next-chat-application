@@ -3,6 +3,7 @@ import redisClient from "../../../../utils/redisClient"; // Import the Redis cli
 
 export async function POST(req) {
   const { email, otp } = await req.json();
+  console.log(email, otp)
 
   if (!email || !otp) {
     return NextResponse.json(

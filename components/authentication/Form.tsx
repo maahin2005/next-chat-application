@@ -1,9 +1,20 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FiUser, FiEye, FiEyeOff } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { setBasicInfo } from "@/lib/store/features/user/userSlice";
 
 const SignupForm: React.FC = () => {
 
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+  const {name, password, email} = useAppSelector((state)=> state.user)
+  console.log({name, password, email})
+
   const [message, setMessage] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -12,7 +23,7 @@ const SignupForm: React.FC = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState("weak");
+  const [passwordStrength, setPasswordStrength] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -32,6 +43,23 @@ const SignupForm: React.FC = () => {
 
     if (response.ok) {
       setMessage(data.message);
+      setOtpSent(true);
+    } else {
+      setMessage(data.error);
+    }
+  };
+
+  const handleVerifyOTP = async () => {
+    const response = await fetch("/api/auth/varify-otp", {
+      method: "POST",
+      body: JSON.stringify({ otp, email: formData.email }),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      setMessage(data.message);
+      setOtpVerified(true);
+      setOtpSent(false);
     } else {
       setMessage(data.error);
     }
@@ -49,10 +77,11 @@ const SignupForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    // Add form submission logic here
+    dispatch(setBasicInfo({ name: `${formData.firstName} ${formData.lastName}`, password:formData.password, email: formData.email }))
+    console.log({name, password, email})
+    router.push('/auth/signup/step2')
   };
 
   return (
@@ -115,11 +144,37 @@ const SignupForm: React.FC = () => {
           onClick={handleSendOTP}
           className="text-sm text-blue-400 hover:underline"
         >
-          Verify
+          {otpVerified ? message : otpSent ? message : "Verify"}
         </button>
       </div>
 
-      <div className="relative">
+      {otpSent && <div className="w-full bg-gray-800 flex items-center gap-3 px-4 py-3 rounded-lg">
+        <div className="flex-1">
+          <label htmlFor="email" className="sr-only">
+            OTP
+          </label>
+          <input
+            type="OTP"
+            id="OTP"
+            onChange={(e) => {
+              console.log(e.target.value)
+              setOtp(e.target.value)
+            }}
+            placeholder="Enter OTP"
+            className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
+            required
+          />
+        </div>
+        <button
+          type="button"
+          onClick={handleVerifyOTP}
+          className="text-sm text-blue-400 hover:underline"
+        >
+          {otpVerified ? message : "Verify"}
+        </button>
+      </div>}
+
+      {otpVerified && <div className="relative">
         <label htmlFor="password" className="sr-only">
           Password
         </label>
@@ -150,29 +205,30 @@ const SignupForm: React.FC = () => {
         <div className="mt-2">
           <div
             className={`h-2 rounded-lg ${passwordStrength === "weak"
-                ? "bg-red-500"
-                : passwordStrength === "medium"
-                  ? "bg-orange-500"
-                  : "bg-green-500"
+              ? "bg-red-500"
+              : passwordStrength === "medium"
+                ? "bg-orange-500"
+                : "bg-green-500"
               }`}
-            style={{ width: `${passwordStrength === "weak" ? "33%" : passwordStrength === "medium" ? "66%" : "100%"}` }}
+            style={{ width: `${passwordStrength === "" ? "0%" : passwordStrength === "weak" ? "33%" : passwordStrength === "medium" ? "66%" : "100%"}` }}
           ></div>
           <p
             className={`text-sm mt-1 ${passwordStrength === "weak"
-                ? "text-red-500"
-                : passwordStrength === "medium"
-                  ? "text-orange-500"
-                  : "text-green-500"
+              ? "text-red-500"
+              : passwordStrength === "medium"
+                ? "text-orange-500"
+                : "text-green-500"
               }`}
           >
-            {passwordStrength === "weak"
-              ? "Weak"
-              : passwordStrength === "medium"
-                ? "Medium"
-                : "Strong"}
+            {passwordStrength === ""
+              ? "" : passwordStrength === "weak"
+                ? "Weak"
+                : passwordStrength === "medium"
+                  ? "Medium"
+                  : "Strong"}
           </p>
         </div>
-      </div>
+      </div>}
 
       <div className="flex gap-4">
         <button

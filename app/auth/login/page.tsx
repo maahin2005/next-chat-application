@@ -116,7 +116,7 @@ const Login: React.FC = () => {
               {/* Links Below the Form */}
               <div className="mt-6 text-sm text-center space-y-2">
                 <Link
-                  href="/auth/signup"
+                  href="/auth/signup/step1"
                   className="text-blue-600 hover:underline transition duration-300"
                 >
                   Sign Up
