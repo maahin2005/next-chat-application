@@ -7,11 +7,13 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "assets-global.website-files.com",
+        port:"",
         pathname: "/**", // Allows all paths under this domain
       },
       {
         protocol: "https",
         hostname: "via.placeholder.com",
+        port:"",
         pathname: "/**", // Allows all paths under this domain
       },
     ],

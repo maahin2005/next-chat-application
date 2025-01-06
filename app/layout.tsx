@@ -3,7 +3,7 @@ import localFont from "next/font/local";
 import "./globals.css";
 import SessionsProviderWrapper from "@/components/SessionsProviderWrapper";
 import StoreProvider from "./StoreProvider";
-import { EdgeStoreProvider } from '@/lib/edgestore';
+import { EdgeStoreProvider } from "@/lib/edgestore";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -42,12 +42,11 @@ export default function RootLayout({
       </head>
       <SessionsProviderWrapper>
         <StoreProvider>
-
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1800px] m-auto font-ubuntu`}
-        >
-          <EdgeStoreProvider>{children}</EdgeStoreProvider>
-        </body>
+          <body
+            className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1800px] m-auto font-ubuntu`}
+          >
+            <EdgeStoreProvider>{children}</EdgeStoreProvider>
+          </body>
         </StoreProvider>
       </SessionsProviderWrapper>
     </html>

@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       required: true,
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female", "Personal"],
+      default: "Personal",
+    },
     mobileNo: {
       type: String,
     },
@@ -56,7 +61,11 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-          starredAt: { type: String, default: () => formatDate(new Date()) },
+          starredAt: {
+            type: String,
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
+          },
         },
       ],
       default: [],
@@ -65,7 +74,11 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-          blckedAt: { type: String, default: () => formatDate(new Date()) },
+          blckedAt: {
+            type: String,
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
+          },
         },
       ],
       default: [],
@@ -78,7 +91,11 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-          friendsAt: { type: String, default: () => formatDate(new Date()) },
+          friendsAt: {
+            type: String,
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
+          },
         },
       ],
       default: [],
@@ -87,7 +104,11 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-          receivedAt: { type: String, default: () => formatDate(new Date()) },
+          receivedAt: {
+            type: String,
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
+          },
         },
       ],
       default: [],
@@ -96,7 +117,11 @@ const userSchema = new mongoose.Schema(
       type: [
         {
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-          sentAt: { type: String, default: () => formatDate(new Date()) },
+          sentAt: {
+            type: String,
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
+          },
         },
       ],
       default: [],
@@ -107,7 +132,8 @@ const userSchema = new mongoose.Schema(
           userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
           notInterestedAt: {
             type: String,
-            default: () => formatDate(new Date()),
+            default: () =>
+              formatDate(new Date(Date.UTC(2012, 11, 20, 3, 0, 0))),
           },
         },
       ],
@@ -132,7 +158,7 @@ function formatDate(date) {
     minute: "numeric",
     hour12: true,
   };
-  return date.toLocaleString("en-US", options);
+  return date.toLocaleString("en-US");
 }
 
 userSchema.pre("save", async function (next) {

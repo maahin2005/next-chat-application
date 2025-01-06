@@ -15,7 +15,7 @@ export async function authMiddleware(request) {
     const secret = new TextEncoder().encode(process.env.JWT_SECRET);
 
     const { payload } = await jwtVerify(accessToken.value, secret);
-    request.userDataFromToken = payload;
+    // request.userDataFromToken = payload;
 
     return NextResponse.next();
   } catch (accessErr) {

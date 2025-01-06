@@ -1,5 +1,6 @@
 import { NextResponse, URLPattern } from "next/server";
 import { jwtVerify } from "jose";
+import { decodeToken } from "@/utils/decodeToken";
 
 export async function compareUserIdForCRUD(req) {
   try {
@@ -30,9 +31,7 @@ export async function compareUserIdForCRUD(req) {
     const match = pattern.exec(req.nextUrl);
     const id = match?.pathname.groups.id;
 
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token.value ?? token, secret);
-    console.log("req.nextUrl: " + req.nextUrl);
+    const payload = await decodeToken(token.value ?? token);
 
     if (!payload) {
       return NextResponse.json(
@@ -41,7 +40,7 @@ export async function compareUserIdForCRUD(req) {
       );
     }
 
-    const userId = id === payload.id;
+    const userId = id === payload.userId;
 
     if (!userId) {
       return NextResponse.json(

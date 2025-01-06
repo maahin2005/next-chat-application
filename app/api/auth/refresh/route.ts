@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken"; // For generating the JWT token
+import { decodeToken } from "@/utils/decodeToken";
 
 export async function POST(req: NextRequest) {
   const token = req.cookies.get("token")?.value;
@@ -9,7 +10,9 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+    // const decoded = jwt.verify(token, process.env.JWT_SECRET!);
+
+    const decoded = await decodeToken(token);
 
     const newAccessToken = jwt.sign(decoded, process.env.JWT_SECRET!, {
       expiresIn: "24h",

@@ -1,146 +1,147 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-import { AiOutlineWechatWork } from "react-icons/ai";
+import React, { FormEvent, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
-import GoogleButton from "react-google-button";
 import SendOTP from "@/components/otp/SendOTP";
+import AuthNav from "@/components/authentication/login/AuthNav";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import {
+  loginRequest,
+  loginSuccess,
+  loginFailure,
+} from "@/lib/store/features/login/loginSlice";
+
+import { FcGoogle } from "react-icons/fc";
+import { FiUser } from "react-icons/fi";
+import { AppDispatch } from "@/lib/store/store";
+import SimpleSpinner from "./../../../components/loading/SimpleSpinner";
 
 const Login: React.FC = () => {
-  const [isPasswordVisible, setPasswordVisible] = useState(true);
-  const { data: session, status } = useSession();
-  console.log("session:", session, "status:", status)
+  const dispatch = useDispatch<AppDispatch>();
+  const { loading } = useSelector((state: any) => state.login);
+
+  const [isPasswordVisible, setPasswordVisible] = useState(false);
+  const [credentials, setCredentials] = useState({
+    username: "",
+    password: "",
+  });
+  // const { data: session, status } = useSession();
+  // console.log("session:", session, "status:", status)
   const router = useRouter();
 
   const togglePasswordVisibility = () => {
-    console.log(isPasswordVisible);
     setPasswordVisible(!isPasswordVisible);
   };
-  useEffect(()=>{console.log("session: ", session)},[session])
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    dispatch(loginRequest());
+    try {
+      const res = await axios.post("/api/users/login", credentials);
+
+      console.log("res: ===> ", res);
+      if (res.data.success) {
+        dispatch(loginSuccess());
+        router.push("/dashboard");
+      }
+      // alert("Login successful!");
+    } catch (error) {
+      dispatch(loginFailure((error as Error).message));
+      console.log("error: " + error);
+    }
+  };
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setCredentials({
+      ...credentials,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex flex-col">
-      {/* Header */}
-      <header className="bg-white shadow-md py-4">
-        <div className="container mx-auto flex justify-center px-4 md:px-8">
-          {/* Logo */}
-          <div className="flex items-center gap-2 text-2xl font-semibold text-gray-800 font-kanit">
-            <AiOutlineWechatWork className="text-blue-600" />
-            <h1>LetsChat.io</h1>
-          </div>
-        </div>
-      </header>
-
-      {/* Main Content */}
-      <main className="flex-grow flex items-center justify-center">
-        <div className="max-w-4xl mx-auto p-4 w-full">
-          <div className="bg-white shadow-md rounded-lg p-8 flex flex-col md:flex-row items-center gap-8">
-            {/* Logo Section */}
-            <div className="gap-2 text-4xl items-center font-kanit hidden md:flex">
-              <AiOutlineWechatWork className="text-blue-600" />
-              <h1>LetsChat.io</h1>
-            </div>
-
-            {/* Login Form */}
-            <div className="w-full md:w-1/2 max-w-md">
-              <div className="text-4xl font-bold text-gray-800 mb-6 text-center">
-                Login<span className="text-blue-600">#</span>
-              </div>
-              <form className="space-y-4">
-                {/* Username Input */}
-                <div>
-                  <label
-                    htmlFor="username"
-                    className="block text-gray-700 text-sm font-medium"
-                  >
-                    Username
-                  </label>
-                  <div className="relative mt-1">
-                    <input
-                      type="text"
-                      id="username"
-                      placeholder="username"
-                      className="w-full border-b border-gray-300 bg-transparent px-3 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                {/* Password Input */}
-                <div>
-                  <label
-                    htmlFor="password"
-                    className="block text-gray-700 text-sm font-medium"
-                  >
-                    Password
-                  </label>
-                  <div className="relative">
-                    <input
-                      type={isPasswordVisible ? "text" : "password"}
-                      id="password"
-                      placeholder="Password"
-                      className="w-full border-b border-gray-300 bg-transparent px-2 py-2 focus:outline-none focus:ring-0 focus:border-blue-500"
-                    />
-                    <span
-                      className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 cursor-pointer"
-                      onClick={togglePasswordVisibility}
-                    >
-                      {isPasswordVisible ? <FiEye /> : <FiEyeOff />}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white rounded-md py-2 font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  Submit
-                </button>
-              </form>
-
-              {/* Divider */}
-              <div className="flex items-center my-4">
-                <div className="w-full border-t border-gray-300"></div>
-                <span className="px-2 text-gray-500 text-sm">or</span>
-                <div className="w-full border-t border-gray-300"></div>
-              </div>
-
-              <div className="flex justify-center">
-                <GoogleButton onClick={() => signIn("google")} />
-                  <button onClick={()=> signOut()}>Sign Out</button>
-              </div>
-
-              {/* Links Below the Form */}
-              <div className="mt-6 text-sm text-center space-y-2">
-                <Link
+    <div className="flex h-fit min-h-screen md:bg-[url('/images/login/bg-22.jpg')] bg-no-repeat bg-center bg-cover ">
+      <div className="w-4/5 border-r-2 border-white my-20 md:my-auto md:w-[50%] lg:w-[45%]  p-3 md:p-5 flex flex-col h-fit md:min-h-screen md:bg-slate-950 md:bg-opacity-70">
+        <div className="h-[80%] md:ml-10 my-auto sm:w-[70%] lg:w-[60%] ">
+          <div>
+            <header className="mb-10 text-white">
+              <h1 className="text-5xl font-bold">Welcome Back</h1>
+              <p className=" text-gray-400 mt-2">To</p>
+              <h2 className="text-5xl font-bold mt-2">
+                Letschat<span className="text-blue-500">.</span>
+              </h2>
+              <p className="text-sm text-gray-500 mt-1">
+                Not a member?{" "}
+                <a
                   href="/auth/signup"
-                  className="text-blue-600 hover:underline transition duration-300"
+                  className="text-blue-500 hover:underline"
                 >
                   Sign Up
-                </Link>
-                <br />
-                <Link
-                  href="/forgot-password"
-                  className="text-blue-600 hover:underline transition duration-300"
-                >
-                  Forgot Password?
-                </Link>
-                <br />
-                <Link
-                  href="/help"
-                  className="text-blue-600 hover:underline transition duration-300"
-                >
-                  Need help getting started?
-                </Link>
-              </div>
-            </div>
+                </a>
+              </p>
+            </header>
           </div>
+          <form onSubmit={handleSubmit}>
+            <div className="w-full bg-slate-800 bg-opacity-70 flex items-center gap-3 px-4 py-3 rounded-lg">
+              <input
+                type="text"
+                name="username"
+                placeholder="username"
+                onChange={handleInputChange}
+                className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
+                required
+              />
+              <FiUser className="w-5 h-5 text-gray-500" />
+            </div>
+            <div className="my-5 w-full bg-slate-800 bg-opacity-70 flex items-center gap-3 px-4 py-3 rounded-lg">
+              <input
+                type={isPasswordVisible ? "text" : "password"}
+                name="password"
+                placeholder="password"
+                onChange={handleInputChange}
+                className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
+                required
+              />
+              {isPasswordVisible ? (
+                <FiEye
+                  className="w-5 h-5 text-gray-500 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                />
+              ) : (
+                <FiEyeOff
+                  className="w-5 h-5 text-gray-500 cursor-pointer"
+                  onClick={togglePasswordVisibility}
+                />
+              )}
+            </div>
+            <button
+              type="submit"
+              className="text-white w-full bg-blue-700 flex justify-center items-center rounded-lg h-10 p-2 py-3"
+            >
+              {!loading ? "Login" : <SimpleSpinner />}
+            </button>
+          </form>
+          <div className="flex justify-center items-center gap-4 my-8">
+            <div className="h-2 border-b-2 border-gray-400 w-1/2"></div>
+            <p className="text-sm text-gray-300">OR</p>
+            <div className="h-2 border-b-2 border-gray-400 w-1/2"></div>
+          </div>
+          <button
+            className="my-3 transition-colors font-kanit text-lg tracking-wide bg-slate-200 text-black flex justify-center items-center gap-3 hover:text-white w-full m-auto hover:bg-transparent border-gray-200 rounded-full border-2 h-10 p-3"
+            onClick={() => signIn("google")}
+          >
+            <FcGoogle className="text-2xl " /> Continue with Google
+          </button>
         </div>
-      </main>
-      <SendOTP />
+      </div>
+      <div className="hidden md:inline-block flex-1">
+        {/* <video autoPlay loop muted className="h-full w-full object-cover">
+          <source src="/images/login/bgRocketEarthGif.mp4" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video> */}
+      </div>
     </div>
   );
 };
