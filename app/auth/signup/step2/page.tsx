@@ -4,6 +4,9 @@ import { useState } from "react";
 import { useAppSelector, useAppDispatch } from "@/lib/store/hooks";
 import { setAdditionalInfo } from "@/lib/store/features/user/userSlice";
 import Link from "next/link";
+import Input from "@/components/authentication/InputField"; // Adjust the path as needed
+import { FiPhone, FiUser } from "react-icons/fi";
+import { FaMagnifyingGlassLocation } from "react-icons/fa6";
 
 const SignupStep2 = () => {
   const router = useRouter();
@@ -29,10 +32,10 @@ const SignupStep2 = () => {
 
     // Dispatch action to store data in Redux
     dispatch(setAdditionalInfo(formData));
-    console.log("formData:", formData);
+    console.log({ username, mobileNo, city });
 
     // Navigate to Step 3
-    router.push("/homepage");
+    // router.push("/homepage");
   };
 
   const handleBackStep = () => {
@@ -46,57 +49,39 @@ const SignupStep2 = () => {
         <h1 className="text-2xl font-bold text-blue-500 mb-2">Step 2 of 3</h1>
         <h2 className="text-lg font-semibold text-white mb-6">Provide Additional Information</h2>
 
-        <form onSubmit={handleNextStep} className="space-y-4">
+        <form onSubmit={handleNextStep} className="space-y-4 text-center">
           {/* Username Input */}
-          <div>
-            <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-1">
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              value={formData.username}
-              onChange={handleChange}
-              placeholder="Enter your username"
-              className="w-full bg-gray-800 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          <Input
+            id="firstName"
+            type="text"
+            value={formData.username}
+            placeholder="Username"
+            onChange={handleChange}
+            icon={<FiUser />}
+            required
+          />
 
           {/* Mobile Number Input */}
-          <div>
-            <label htmlFor="mobileNo" className="block text-sm font-medium text-gray-300 mb-1">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="mobileNo"
-              name="mobileNo"
-              value={formData.mobileNo}
-              onChange={handleChange}
-              placeholder="Enter your phone number"
-              className="w-full bg-gray-800 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          <Input
+            id="mobileNo"
+            type="text"
+            value={formData.mobileNo}
+            placeholder="Mobile No."
+            onChange={handleChange}
+            icon={<FiPhone />}
+            required
+          />
 
           {/* City Input */}
-          <div>
-            <label htmlFor="city" className="block text-sm font-medium text-gray-300 mb-1">
-              City
-            </label>
-            <input
-              type="text"
-              id="city"
-              name="city"
-              value={formData.city}
-              onChange={handleChange}
-              placeholder="Enter your city"
-              className="w-full bg-gray-800 text-white p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
+          <Input
+            id="city"
+            type="text"
+            value={formData.city}
+            placeholder="Enter your city"
+            onChange={handleChange}
+            icon={<FaMagnifyingGlassLocation />}
+            required
+          />
 
           {/* Navigation Buttons */}
           <div className="flex justify-between items-center">
@@ -114,7 +99,7 @@ const SignupStep2 = () => {
               Next
             </button>
           </div>
-            <Link href="/dashboard">Skip</Link>
+          <Link href="/dashboard">Skip</Link>
         </form>
 
         {/* Current Redux State Display (For Debugging) */}
