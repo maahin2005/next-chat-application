@@ -27,6 +27,7 @@ export async function POST(req) {
       role,
       incomingFriendReq,
       sentFriendReq,
+      gender
     } = await req.json();
 
     const data = await UserModel.create({
@@ -50,6 +51,7 @@ export async function POST(req) {
       role,
       incomingFriendReq,
       sentFriendReq,
+      gender
     });
 
     const userData = {

@@ -27,7 +27,7 @@ export async function POST(req: Request) {
     const friends = await UserModel.find({
       _id: { $in: friendIds },
     })
-      .select("name email") // Adjust fields as needed
+      .select("name email")
       .sort({ name: 1 });
 
     return NextResponse.json(

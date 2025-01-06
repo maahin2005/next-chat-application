@@ -1,6 +1,7 @@
 // import jwt from "jsonwebtoken";
 import { NextResponse } from "next/server";
 import { jwtVerify } from "jose";
+import { decodeToken } from "@/utils/decodeToken";
 
 export async function verifyUserRole(req) {
   try {
@@ -15,9 +16,7 @@ export async function verifyUserRole(req) {
       );
     }
 
-    // Verify the token
-    const secret = new TextEncoder().encode(process.env.JWT_SECRET);
-    const { payload } = await jwtVerify(token.value ?? token, secret);
+    const payload = await decodeToken(token.value ?? token);
 
     if (!payload) {
       return NextResponse.json(
