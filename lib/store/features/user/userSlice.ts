@@ -3,11 +3,11 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 export interface UserState {
   id: string | null;
+  name: string | null;
   username: string | null;
   email: string | null;
   password: string | null;
   profileImage: string | null;
-  name: string | null;
   mobileNo: string | null;
   profileVisibility: boolean;
   heading: string | null;
@@ -54,10 +54,10 @@ export const userSlice = createSlice({
     // Step 1: Basic Signup Info
     setBasicInfo: (
       state,
-      action: PayloadAction<{ username: string; email: string; password: string }>
+      action: PayloadAction<{ name: string; email: string; password: string }>
     ) => {
-      const { username, email, password } = action.payload;
-      state.username = username;
+      const { name, email, password } = action.payload;
+      state.name = name;
       state.email = email;
       state.password = password;
     },
@@ -66,7 +66,7 @@ export const userSlice = createSlice({
     setAdditionalInfo: (
       state,
       action: PayloadAction<{
-        name?: string;
+        username?: string;
         mobileNo?: string;
         profileVisibility?: boolean;
         heading?: string;
@@ -77,7 +77,7 @@ export const userSlice = createSlice({
       }>
     ) => {
       const {
-        name,
+        username,
         mobileNo,
         profileVisibility,
         heading,
@@ -86,7 +86,7 @@ export const userSlice = createSlice({
         country,
         pincode,
       } = action.payload;
-      if (name) state.name = name;
+      if (username) state.username = username;
       if (mobileNo) state.mobileNo = mobileNo;
       if (profileVisibility !== undefined)
         state.profileVisibility = profileVisibility;

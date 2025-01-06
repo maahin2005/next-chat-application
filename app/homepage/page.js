@@ -1,9 +1,12 @@
+'use client';
 import MainContent from '@/components/homepage/MainContent'
 import HomePageNav from '@/components/homepage/Navbar'
 import SearchFriends from '@/components/homepage/SearchFriends'
+import { useAppSelector } from "@/lib/store/hooks";
 import React from 'react'
 
-function homepage() {
+function Homepage() {
+  const { username, mobileNo, city } = useAppSelector((state) => state.user);
   return (
     <div className="md:h-screen text-blue-950 ">
       <div>
@@ -21,5 +24,5 @@ function homepage() {
   )
 }
 
-export default homepage
+export default Homepage
 // bg-gradient-to-br from-[#93A5CF] to-[#E4EfE9]

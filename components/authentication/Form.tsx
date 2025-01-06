@@ -1,9 +1,22 @@
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FiUser, FiEye, FiEyeOff } from "react-icons/fi";
+import { useAppDispatch, useAppSelector } from "@/lib/store/hooks";
+import { setBasicInfo } from "@/lib/store/features/user/userSlice";
+import Input from "@/components/authentication/InputField"; // Adjust the path as needed
+
 
 const SignupForm: React.FC = () => {
 
+  const dispatch = useAppDispatch()
+  const router = useRouter()
+  const { name, password, email } = useAppSelector((state) => state.user)
+  console.log({ name, password, email })
+
   const [message, setMessage] = useState("");
+  const [otp, setOtp] = useState("");
+  const [otpVerified, setOtpVerified] = useState(false);
+  const [otpSent, setOtpSent] = useState(false);
 
   const [formData, setFormData] = useState({
     firstName: "",
@@ -12,7 +25,7 @@ const SignupForm: React.FC = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
-  const [passwordStrength, setPasswordStrength] = useState("weak");
+  const [passwordStrength, setPasswordStrength] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -32,6 +45,23 @@ const SignupForm: React.FC = () => {
 
     if (response.ok) {
       setMessage(data.message);
+      setOtpSent(true);
+    } else {
+      setMessage(data.error);
+    }
+  };
+
+  const handleVerifyOTP = async () => {
+    const response = await fetch("/api/auth/varify-otp", {
+      method: "POST",
+      body: JSON.stringify({ otp, email: formData.email }),
+    });
+    const data = await response.json();
+
+    if (response.ok) {
+      setMessage(data.message);
+      setOtpVerified(true);
+      setOtpSent(false);
     } else {
       setMessage(data.error);
     }
@@ -49,130 +79,75 @@ const SignupForm: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    // Add form submission logic here
+    dispatch(setBasicInfo({ name: `${formData.firstName} ${formData.lastName}`, password: formData.password, email: formData.email }))
+    console.log({ name, password, email })
+    router.push('/auth/signup/step2')
   };
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6">
       <div className="grid grid-cols-2 gap-4">
-        <div className="w-full bg-gray-800 flex items-center gap-3 px-4 py-3 rounded-lg">
-          <div className="flex-1">
-            <label htmlFor="firstName" className="sr-only">
-              First name
-            </label>
-            <input
-              type="text"
-              id="firstName"
-              value={formData.firstName}
-              onChange={handleChange}
-              placeholder="First name"
-              className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
-              required
-            />
-          </div>
-          <FiUser className="w-5 h-5 text-gray-500" />
-        </div>
-
-        <div className="w-full bg-gray-800 flex items-center gap-3 px-4 py-3 rounded-lg">
-          <div className="flex-1">
-            <label htmlFor="lastName" className="sr-only">
-              Last name
-            </label>
-            <input
-              type="text"
-              id="lastName"
-              value={formData.lastName}
-              onChange={handleChange}
-              placeholder="Last name"
-              className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
-              required
-            />
-          </div>
-          <FiUser className="w-5 h-5 text-gray-500" />
-        </div>
+        <Input
+          id="firstName"
+          type="text"
+          value={formData.firstName}
+          placeholder="First name"
+          onChange={handleChange}
+          icon={<FiUser />}
+          required
+        />
+        <Input
+          id="lastName"
+          type="text"
+          value={formData.lastName}
+          placeholder="Last name"
+          onChange={handleChange}
+          icon={<FiUser />}
+          required
+        />
       </div>
 
-      <div className="w-full bg-gray-800 flex items-center gap-3 px-4 py-3 rounded-lg">
-        <div className="flex-1">
-          <label htmlFor="email" className="sr-only">
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={formData.email}
-            onChange={handleChange}
-            placeholder="Email"
-            className="w-full bg-transparent text-white placeholder-gray-500 focus:outline-none"
-            required
-          />
-        </div>
-        <button
-          type="button"
-          onClick={handleSendOTP}
-          className="text-sm text-blue-400 hover:underline"
-        >
-          Verify
-        </button>
-      </div>
+      <Input
+        id="email"
+        type="text"
+        value={formData.email}
+        placeholder="Email"
+        onChange={handleChange}
+        icon={<button type="button" className="text-blue-500" onClick={handleSendOTP}>{otpVerified ? <span className="text-green">Varified</span>: otpSent ? <span className="text-white">OTP sent!</span> : "Varify"}</button>}
+        required
+      />
 
-      <div className="relative">
-        <label htmlFor="password" className="sr-only">
-          Password
-        </label>
-        <div className="w-full bg-gray-800 flex items-center gap-3 px-4 py-3 rounded-lg">
-          <input
-            type={showPassword ? "text" : "password"}
-            id="password"
-            value={formData.password}
-            onChange={handleChange}
-            placeholder="Password"
-            className="flex-1 bg-transparent text-white placeholder-gray-500 focus:outline-none"
-            required
-          />
-          {showPassword ? (
-            <FiEyeOff
-              className="w-5 h-5 text-gray-500 cursor-pointer"
-              onClick={() => setShowPassword(false)}
-            />
-          ) : (
-            <FiEye
-              className="w-5 h-5 text-gray-500 cursor-pointer"
-              onClick={() => setShowPassword(true)}
-            />
-          )}
-        </div>
+      {otpSent && (
+        <Input
+          id="OTP"
+          type="text"
+          value={otp}
+          placeholder="Enter OTP"
+          onChange={(e) => setOtp(e.target.value)}
+          icon={<button type="button" onClick={handleVerifyOTP}>Varify OTP</button>}
+          required
+        />
+      )}
 
-        {/* Password strength bar */}
-        <div className="mt-2">
-          <div
-            className={`h-2 rounded-lg ${passwordStrength === "weak"
-                ? "bg-red-500"
-                : passwordStrength === "medium"
-                  ? "bg-orange-500"
-                  : "bg-green-500"
-              }`}
-            style={{ width: `${passwordStrength === "weak" ? "33%" : passwordStrength === "medium" ? "66%" : "100%"}` }}
-          ></div>
-          <p
-            className={`text-sm mt-1 ${passwordStrength === "weak"
-                ? "text-red-500"
-                : passwordStrength === "medium"
-                  ? "text-orange-500"
-                  : "text-green-500"
-              }`}
-          >
-            {passwordStrength === "weak"
-              ? "Weak"
-              : passwordStrength === "medium"
-                ? "Medium"
-                : "Strong"}
-          </p>
-        </div>
-      </div>
+      {otpVerified && (
+        <Input
+          id="password"
+          type={showPassword ? "text" : "password"}
+          value={formData.password}
+          placeholder="Password"
+          onChange={handleChange}
+          icon={
+            showPassword ? (
+              <FiEyeOff onClick={() => setShowPassword(false)} className="cursor-pointer" />
+            ) : (
+              <FiEye onClick={() => setShowPassword(true)} className="cursor-pointer" />
+            )
+          }
+          required
+        />
+      )}
 
       <div className="flex gap-4">
         <button
