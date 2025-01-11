@@ -12,7 +12,10 @@ export async function middleware(request) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
-  if (isAuth && ["/auth/login", "/auth/signup"].includes(url)) {
+  if (
+    isAuth &&
+    ["/auth/login", "/auth/signup", "/auth/signup/build-profile"].includes(url)
+  ) {
     return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 

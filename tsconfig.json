@@ -36,8 +36,11 @@
     "lib/mongoose.js",
     "components/Navbar2.js",
     "components/Footer.tsx",
-    "Models/users.model.js"
-, "app/api/auth/token.js", "app/api/auth/send-otp/route.js"  ],
+    "Models/users.model.js",
+    "app/api/auth/token.js",
+    "app/api/otp/send/route.js",
+    "app/api/otp/check/route.js"
+  ],
   "exclude": [
     "node_modules"
   ]

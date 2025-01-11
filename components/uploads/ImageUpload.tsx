@@ -3,7 +3,7 @@ import { useEdgeStore } from "@/lib/edgestore";
 import React from "react";
 import { SingleImageDropzone } from "../SingleImageDropZone";
 
-export default function ImageUpload() {
+export default function ImageUpload({ getImgURL }: any) {
   const [file, setFile] = React.useState<File>();
   const [urls, setUrls] = React.useState<string>();
   const [progressBar, setProgressBar] = React.useState<number>(0);
@@ -18,8 +18,10 @@ export default function ImageUpload() {
           setProgressBar(progress);
         },
       });
-      //   save data in db
       setUrls(res.url);
+      getImgURL(res.url);
+    } else {
+      alert("Please select a Image");
     }
   };
 
@@ -38,13 +40,19 @@ export default function ImageUpload() {
       />
       <div className="h-[6px] w-44 border rounded overflow-hidden">
         <div
-          className="h-full bg-purple-700 transition-all duration-150"
+          className="h-full bg-gradient-to-r text-lg from-blue-500 to-purple-500 transition-all duration-150"
           style={{
             width: `${progressBar}%`,
           }}
         />
       </div>
-      <button onClick={handleUploadButtonClick}>Upload</button>
+      <button
+        className={`${urls?"text-green-500":"text-black"} bg-white px-3 py-2 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all`}
+        onClick={handleUploadButtonClick}
+        disabled={urls?true:false}
+      >
+        {urls?"Uploaded Successfully":"Upload"}
+      </button>
     </div>
   );
 }

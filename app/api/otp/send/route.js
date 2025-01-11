@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import redisClient from "../../../../utils/redisClient"; // Import the Redis client
+import redisClient from "@/utils/redisClient"; // Import the Redis client
 
 export async function POST(req) {
   const { email } = await req.json();
@@ -30,13 +30,12 @@ export async function POST(req) {
   try {
     await transporter.sendMail(mailOptions);
 
-    // Store OTP in Redis with a 5-minute expiration time (300 seconds)
     console.log(email, otp)
     await redisClient.set(email, otp, "EX", 300);
-    // const storedOtp = await redisClient.get(email);
-    // console.log(storedOtp, otp)
+    const storedOtp = await redisClient.get(email);
+    console.log(storedOtp, otp)
     
-    return NextResponse.json({ message: "OTP sent successfully" });
+    return NextResponse.json({ message: "OTP sent successfully" , success: true}, {status: 200});
   } catch (error) {
     console.error("Failed to send OTP:", error);
     return NextResponse.json({ error: "Failed to send OTP" }, { status: 500 });

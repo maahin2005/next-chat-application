@@ -15,9 +15,22 @@ const nextConfig: NextConfig = {
         hostname: "via.placeholder.com",
         port:"",
         pathname: "/**", // Allows all paths under this domain
+      }, 
+      {
+        protocol: "https",
+        hostname: "randomuser.me",
+        port:"",
+        pathname: "/**", // Allows all paths under this domain
       },
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+        port:"",
+        pathname: "/**", // Allows all paths under this domain
+      }
+
     ],
-    domains: ["randomuser.me", "via.placeholder.com"],
+    // domains: ["randomuser.me", "via.placeholder.com","lh3.googleusercontent.com"],
   },
 };
 

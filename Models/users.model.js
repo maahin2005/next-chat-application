@@ -31,8 +31,7 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     password: {
-      type: String,
-      required: true,
+      type: String
     },
     profileVisibility: {
       type: String,
@@ -56,6 +55,10 @@ const userSchema = new mongoose.Schema(
     },
     pincode: {
       type: String,
+    },
+    byGoogle:{
+      type: Boolean,
+      default: false
     },
     starFriends: {
       type: [
@@ -162,7 +165,11 @@ function formatDate(date) {
 }
 
 userSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) return next(); // Skip hashing if password hasn't changed
+  console.log("===FROM MODEL===== , ", this.password)
+  if (!this.password || !this.isModified("password")) {
+    return next();
+  }
+
   try {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
@@ -177,6 +184,6 @@ userSchema.methods.comparePassword = async function (userEnteredPassword) {
   return await bcrypt.compare(userEnteredPassword, this.password);
 };
 
-const UserModel = mongoose.models.User || mongoose.model("User", userSchema);
+const UserModel =  mongoose?.models?.User || mongoose.model("User", userSchema);
 
 export default UserModel;

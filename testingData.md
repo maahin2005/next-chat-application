@@ -271,5 +271,5 @@ side line or code
 <div className="h-[35%] my-5 border-r-2 m-auto border-gray-400 w-0"></div>
 <p className="text-center text-sm text-gray-300">OR</p>
 <div className="h-[35%] my-5 border-r-2 m-auto border-gray-400 w-0"></div>
-</div> _/}
-{/_ </div> _/}
+</div> 
+ </div> _/}

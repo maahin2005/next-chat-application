@@ -3,31 +3,31 @@ import { NextResponse } from "next/server";
 import UserModel from "@/Models/users.model";
 
 export async function POST(req) {
+  await connectDB();
   try {
-    // Connect to the database
-    await connectDB();
+    const { username } = await req.json();
 
-    // Parse the request body
-    const body = await req.json();
-
-    // Check for the key sent by the frontend
-    if (body.isPostByFE) {
-      // Fetch all usernames from the database
-      const users = await UserModel.find({}, "username");
-      const usernames = users.map((user) => user.username);
-
-      // Return the list of usernames
-      return NextResponse.json({ success:true,usernames }, { status: 200 });
-    } else {
+    // Validate the incoming data
+    if (!username || typeof username !== "string") {
       return NextResponse.json(
-        { error: "Invalid request or missing key" },
+        { success: false, error: "Invalid or missing username" },
         { status: 400 }
       );
     }
-  } catch (error) {
-    console.error("Error fetching usernames:", error);
+
+    const userExists = await UserModel.exists({ username });
+
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      {
+        success: true,
+        available: !userExists,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error checking username availability:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal Server Error" },
       { status: 500 }
     );
   }
