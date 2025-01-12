@@ -1,7 +1,9 @@
+"use client";
+
 import React from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
 import { PiToggleLeftDuotone } from "react-icons/pi";
-import { IoNotificationsCircleSharp } from "react-icons/io5";
+import { LuLogOut } from "react-icons/lu";
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -12,8 +14,20 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { RiMenu3Line } from "react-icons/ri";
+import axios from "axios";
 
 const Nav: React.FC = () => {
+
+  const logout = async () =>{
+    try {
+      const resp = await axios.get("api/auth/logout");
+      alert(resp.data.message)
+    } catch (error) {
+
+      console.log("ERROR")
+    }
+  }
+
   return (
     <nav className="flex px-3 sm:px-10 h-full">
       <div className="flex justify-between w-full items-center">
@@ -29,8 +43,12 @@ const Nav: React.FC = () => {
               Letschat
             </h1>
           </Link>
-          <IoNotificationsCircleSharp className="text-4xl" />
           <PiToggleLeftDuotone className="text-4xl" />
+        <button onClick={logout} className="cursor-pointer">
+
+          <LuLogOut className="text-3xl" />
+        </button>
+
         </div>
         <div className="md:hidden">
           <DropdownMenu>
@@ -46,9 +64,6 @@ const Nav: React.FC = () => {
                     Letschat
                   </h1>
                 </Link>
-              </DropdownMenuItem>
-              <DropdownMenuItem>
-                <IoNotificationsCircleSharp className="text-4xl" />
               </DropdownMenuItem>
               <DropdownMenuItem>
                 <PiToggleLeftDuotone className="text-4xl" />

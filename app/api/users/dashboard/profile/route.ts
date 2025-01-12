@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
 
   try {
     const accessToken = req.cookies.get("token")?.value;
-
+    
     if (!accessToken) {
       return NextResponse.json(
         { error: "No tokens provided" },
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     }
 
     const decoded = await decodeToken(accessToken);
-
+    
     const user = await UserModel.findById({ _id: decoded.userId }).select(
       "name username profileImage heading bio"
     );

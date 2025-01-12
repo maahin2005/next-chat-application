@@ -3,31 +3,31 @@ import { NextResponse } from "next/server";
 import UserModel from "@/Models/users.model";
 
 export async function POST(req) {
+  await connectDB();
   try {
-    // Connect to the database
-    await connectDB();
+    const { email } = await req.json();
 
-    // Parse the request body
-    const body = await req.json();
-
-    // Check for the key sent by the frontend
-    if (body.isPostByFE) {
-      // Fetch all emails from the database
-      const users = await UserModel.find({}, "email");
-      const emails = users.map((user) => user.email);
-
-      // Return the list of emails
-      return NextResponse.json({ success:true, emails }, { status: 200 });
-    } else {
+    // Validate the incoming data
+    if (!email || typeof email !== "string") {
       return NextResponse.json(
-        { error: "Invalid request or missing key" },
+        { success: false, error: "Invalid or missing email" },
         { status: 400 }
       );
     }
-  } catch (error) {
-    console.error("Error fetching emails:", error);
+
+    const userExists = await UserModel.exists({ email });
+
     return NextResponse.json(
-      { error: "Internal Server Error" },
+      {
+        success: true,
+        available: !userExists,
+      },
+      { status: 200 }
+    );
+  } catch (error) {
+    console.error("Error checking email availability:", error);
+    return NextResponse.json(
+      { success: false, error: "Internal Server Error" },
       { status: 500 }
     );
   }

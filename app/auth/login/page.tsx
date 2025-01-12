@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FormEvent, useState } from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { useSession, signIn, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -17,9 +17,13 @@ import {
 import { FcGoogle } from "react-icons/fc";
 import { FiUser } from "react-icons/fi";
 import { AppDispatch } from "@/lib/store/store";
-import SimpleSpinner from "./../../../components/loading/SimpleSpinner";
+import SimpleSpinner from "@/components/loading/SimpleSpinner";
 
 const Login: React.FC = () => {
+  const { data: session, status } = useSession();
+  const [isAPICalled, setIsAPICalled] = useState(false);
+  const router = useRouter()
+
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: any) => state.login);
 
@@ -28,9 +32,31 @@ const Login: React.FC = () => {
     username: "",
     password: "",
   });
-  // const { data: session, status } = useSession();
-  // console.log("session:", session, "status:", status)
-  const router = useRouter();
+
+  const signin = async (userData:any) => {
+    console.log("HIIIIIIIIIIIIIII");
+    try {
+  
+      setIsAPICalled(true);
+      const res = await axios.post("/api/users/google-provider", userData);
+  
+      if(res.data.success) {
+        alert(res.data.msg);
+        router.push("/dashboard");
+      }
+  
+    } catch (error) {
+      console.error("Signup error:", error);
+    }
+  };
+
+  const handleAuthByGoogle = async () => {
+    try {
+      await signIn("google");
+    } catch (error) {
+      console.error("Google auth error:", error);
+    }
+  };
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
@@ -47,7 +73,6 @@ const Login: React.FC = () => {
         dispatch(loginSuccess());
         router.push("/dashboard");
       }
-      // alert("Login successful!");
     } catch (error) {
       dispatch(loginFailure((error as Error).message));
       console.log("error: " + error);
@@ -60,6 +85,19 @@ const Login: React.FC = () => {
       [e.target.name]: e.target.value,
     });
   };
+
+  useEffect(() => {
+    if (session && session?.user && status === "authenticated") {
+      const userData = {
+        name: session?.user?.name,
+        email: session?.user?.email,
+        profileImage: session?.user?.image,
+      };
+      if(!isAPICalled){
+        signin(userData);
+      }
+    }
+  }, [session, status]);
 
   return (
     <div className="flex h-fit min-h-screen md:bg-[url('/images/login/bg-22.jpg')] bg-no-repeat bg-center bg-cover ">
@@ -130,7 +168,7 @@ const Login: React.FC = () => {
           </div>
           <button
             className="my-3 transition-colors font-kanit text-lg tracking-wide bg-slate-200 text-black flex justify-center items-center gap-3 hover:text-white w-full m-auto hover:bg-transparent border-gray-200 rounded-full border-2 h-10 p-3"
-            onClick={() => signIn("google")}
+            onClick={handleAuthByGoogle}
           >
             <FcGoogle className="text-2xl " /> Continue with Google
           </button>
