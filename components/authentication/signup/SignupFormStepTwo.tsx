@@ -86,6 +86,19 @@ function SignupFormStepTwo() {
     }
   };
 
+  const checkUsernameAvailability = async () => {
+    setTyping(false);
+    try {
+      const response = await axios.post(`/api/users/availabilities/usernames`, {
+        username,
+      });
+      setIsAvailable(response.data.available);
+    } catch (error) {
+      console.error("Error checking username:", error);
+      setIsAvailable(null);
+    }
+  };
+
   useEffect(() => {
     const storedData = localStorage.getItem("signup-email");
 
@@ -119,20 +132,9 @@ function SignupFormStepTwo() {
       setTyping(false);
       setIsAvailable(null);
     }
-  }, [username, router]);
+  }, [username, router,checkUsernameAvailability]);
 
-  const checkUsernameAvailability = async () => {
-    setTyping(false);
-    try {
-      const response = await axios.post(`/api/users/availabilities/usernames`, {
-        username,
-      });
-      setIsAvailable(response.data.available);
-    } catch (error) {
-      console.error("Error checking username:", error);
-      setIsAvailable(null);
-    }
-  };
+  
 
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);

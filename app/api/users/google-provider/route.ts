@@ -47,7 +47,7 @@ try {
 }
 }
 
-export const generateUsername = async (name="anonymous user") => {
+const generateUsername = async (name="anonymous user") => {
     const parts = name.split(" ");
     const firstName = parts[0];
     const lastName = parts[1]

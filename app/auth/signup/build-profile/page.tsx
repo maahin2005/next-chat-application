@@ -12,7 +12,7 @@ function ProfileBuilder() {
     if (!storedData) {
       router.push("/auth/signup");
     }
-  }, [])
+  }, [router])
   return (
     <div className="relative bg-slate-950 min-h-fit">
               <div className="hidden md:inline-block absolute border-t-white  border-t-2 w-[80%] top-[13%] left-[14%]"></div>

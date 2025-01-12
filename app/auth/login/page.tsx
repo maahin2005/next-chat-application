@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         signin(userData);
       }
     }
-  }, [session, status]);
+  }, [session, status,isAPICalled,signin]);
 
   return (
     <div className="flex h-fit min-h-screen md:bg-[url('/images/login/bg-22.jpg')] bg-no-repeat bg-center bg-cover ">
