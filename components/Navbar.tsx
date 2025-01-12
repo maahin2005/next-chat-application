@@ -34,7 +34,9 @@ export default function Navbar() {
             Login
           </Link>
           <button className="min-w-36 w-full p-2 h-full bg-contractColor-light hover:bg-contractColor-dark text-white rounded-md">
-            Get Started free
+          <Link href="/auth/signup" className="text-gray-700">
+            Get Started Free
+          </Link>
           </button>
         </div>
 

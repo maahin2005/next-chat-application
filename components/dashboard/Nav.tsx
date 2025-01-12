@@ -4,6 +4,8 @@ import React from "react";
 import { AiOutlineWechatWork } from "react-icons/ai";
 import { PiToggleLeftDuotone } from "react-icons/pi";
 import { LuLogOut } from "react-icons/lu";
+import { signOut } from "next-auth/react";
+
 import Link from "next/link";
 import {
   DropdownMenu,
@@ -15,13 +17,18 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { RiMenu3Line } from "react-icons/ri";
 import axios from "axios";
+import { useRouter } from "next/navigation";
+
 
 const Nav: React.FC = () => {
 
+  const router = useRouter();
   const logout = async () =>{
     try {
+      signOut();
       const resp = await axios.get("api/auth/logout");
       alert(resp.data.message)
+      router.push("/auth/login");
     } catch (error) {
 
       console.log("ERROR")

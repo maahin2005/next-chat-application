@@ -13,12 +13,12 @@ export async function GET() {
     sameSite: "strict",
   });
 
-  response.cookies.set("next-auth.session-token", "", {
-    httpOnly: true,
-    path: "/",
-    expires: new Date(0),
-    sameSite: "strict",
-  });
+  // response.cookies.set("next-auth.session-token", "", {
+  //   httpOnly: true,
+  //   path: "/",
+  //   expires: new Date(0),
+  //   sameSite: "strict",
+  // });
 
 
   return response;

@@ -49,7 +49,7 @@ const MyProfileSec: React.FC = () => {
   };
 
   useEffect(() => {
-    // fetchUserData();
+    fetchUserData();
   }, []);
 
   return (
