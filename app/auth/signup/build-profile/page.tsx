@@ -4,7 +4,7 @@ import React, { useEffect } from 'react'
 import SignupFormStepTwo from '@/components/authentication/signup/SignupFormStepTwo';
 import { useRouter } from 'next/navigation';
 
-function profileBuilder() {
+function ProfileBuilder() {
   const router = useRouter();
 
   useEffect(() => {
@@ -58,4 +58,4 @@ function profileBuilder() {
   )
 }
 
-export default profileBuilder
+export default ProfileBuilder;
