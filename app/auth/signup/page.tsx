@@ -59,7 +59,7 @@ useEffect(() => {
   }
 
   const storedData = localStorage.getItem("signup-email");
-  console.log("storedData==> ", storedData)
+  
     if (storedData && JSON.parse(storedData).verifiedEmail) {
       router.push("/auth/signup/build-profile");
     }

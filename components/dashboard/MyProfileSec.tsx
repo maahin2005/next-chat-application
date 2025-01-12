@@ -14,7 +14,7 @@ import MyProfileArea from "./MyProfileArea";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch } from "@/lib/store/store";
-import ProfileSkeleton from './../loading/skeletons/ProfileSkeleton';
+import ProfileSkeleton from "./../loading/skeletons/ProfileSkeleton";
 import {
   requestFullfilled,
   requestIntiated,
@@ -33,6 +33,8 @@ const MyProfileSec: React.FC = () => {
     heading: "",
   });
 
+
+
   const fetchUserData = async () => {
     dispatch(requestIntiated());
     try {
@@ -47,7 +49,7 @@ const MyProfileSec: React.FC = () => {
   };
 
   useEffect(() => {
-    fetchUserData();
+    // fetchUserData();
   }, []);
 
   return (
@@ -86,7 +88,6 @@ const MyProfileSec: React.FC = () => {
       <div className="border-e-2 border-b-2 border-slate-100 p-3 rounded-xl">
         <h1 className="text-2xl font-kanit">BIO</h1>
         <p className="text-slate-600 text-lg font-spaceGro py-1">
-          
           {profileData.bio ?? "so boring...You have not added your bio yet!"}
         </p>
       </div>

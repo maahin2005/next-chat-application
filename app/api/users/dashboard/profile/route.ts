@@ -7,8 +7,8 @@ export async function GET(req: NextRequest) {
   await connectDB();
 
   try {
-    const accessToken = req.cookies.get("token")?.value || req.cookies.get("next-auth.session-token")?.value;
-    console.log("=========accessToken=========== ", accessToken)
+    const accessToken = req.cookies.get("token")?.value;
+    
     if (!accessToken) {
       return NextResponse.json(
         { error: "No tokens provided" },
@@ -17,7 +17,7 @@ export async function GET(req: NextRequest) {
     }
 
     const decoded = await decodeToken(accessToken);
-    console.log("=========decoded=========== ", decoded)
+    
     const user = await UserModel.findById({ _id: decoded.userId }).select(
       "name username profileImage heading bio"
     );
