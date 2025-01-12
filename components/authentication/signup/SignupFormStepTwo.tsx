@@ -132,7 +132,7 @@ function SignupFormStepTwo() {
       setTyping(false);
       setIsAvailable(null);
     }
-  }, [username, router,checkUsernameAvailability]);
+  }, [username, router]);
 
   
 

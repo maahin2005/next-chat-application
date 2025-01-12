@@ -63,7 +63,7 @@ useEffect(() => {
     if (storedData && JSON.parse(storedData).verifiedEmail) {
       router.push("/auth/signup/build-profile");
     }
-}, [session, status,router,isAPICalled,signup]);
+}, [session, status,router]);
 
   return (
     <>
