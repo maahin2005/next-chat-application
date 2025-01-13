@@ -33,7 +33,6 @@ export async function POST(req) {
     console.log(email, otp)
     await redisClient.set(email, otp, "EX", 300);
     const storedOtp = await redisClient.get(email);
-    console.log(storedOtp, otp)
     
     return NextResponse.json({ message: "OTP sent successfully" , success: true}, {status: 200});
   } catch (error) {

@@ -2,10 +2,8 @@
 
 import React, { FormEvent, useEffect, useState } from "react";
 import { FiEye, FiEyeOff } from "react-icons/fi";
-import { useSession, signIn, signOut } from "next-auth/react";
+import { useSession, signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import SendOTP from "@/components/otp/SendOTP";
-import AuthNav from "@/components/authentication/login/AuthNav";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import {
@@ -13,13 +11,17 @@ import {
   loginSuccess,
   loginFailure,
 } from "@/lib/store/features/login/loginSlice";
+import { useToast } from "@/hooks/use-toast"
 
 import { FcGoogle } from "react-icons/fc";
 import { FiUser } from "react-icons/fi";
 import { AppDispatch } from "@/lib/store/store";
 import SimpleSpinner from "@/components/loading/SimpleSpinner";
+import Link from "next/link";
 
 const Login: React.FC = () => {
+  const { toast } = useToast()
+ 
   const { data: session, status } = useSession();
   const [isAPICalled, setIsAPICalled] = useState(false);
   const router = useRouter()
@@ -41,12 +43,20 @@ const Login: React.FC = () => {
       const res = await axios.post("/api/users/google-provider", userData);
   
       if(res.data.success) {
-        alert(res.data.msg);
+         toast({
+          title: "Login Successfully!",
+          description: res.data.msg,
+        })
         router.push("/dashboard");
+        
       }
-  
-    } catch (error) {
+    } catch (error:any) {
       console.error("Signup error:", error);
+      toast({
+        title: "Oops! Login Fails",
+        description: "Please check your credentials.",
+        variant:"destructive"
+      })
     }
   };
 
@@ -68,12 +78,20 @@ const Login: React.FC = () => {
     try {
       const res = await axios.post("/api/users/login", credentials);
 
-      console.log("res: ===> ", res);
       if (res.data.success) {
         dispatch(loginSuccess());
+        toast({
+          title: "Login Successfully!",
+          description: res.data.msg,
+        })
         router.push("/dashboard");
       }
-    } catch (error) {
+    } catch (error:any) {
+      toast({
+        title: "Login Fail!",
+        description: "Oops! Please check your credentials.",
+        variant:"destructive"
+      })
       dispatch(loginFailure((error as Error).message));
       console.log("error: " + error);
     }
@@ -100,9 +118,9 @@ const Login: React.FC = () => {
   }, [session, status]);
 
   return (
-    <div className="flex h-fit min-h-screen md:bg-[url('/images/login/bg-22.jpg')] bg-no-repeat bg-center bg-cover ">
-      <div className="w-4/5 border-r-2 border-white my-20 md:my-auto md:w-[50%] lg:w-[45%]  p-3 md:p-5 flex flex-col h-fit md:min-h-screen md:bg-slate-950 md:bg-opacity-70">
-        <div className="h-[80%] md:ml-10 my-auto sm:w-[70%] lg:w-[60%] ">
+    <div className="flex h-fit min-h-screen bg-slate-900 md:bg-[url('/images/login/bg-22.jpg')] bg-no-repeat bg-center bg-cover ">
+      <div className="m-auto w-4/5 md:border-r-2 border-white my-20 md:my-auto md:w-[60%] lg:w-[45%]  sm:p-3 md:p-5 flex flex-col h-fit md:min-h-screen md:bg-slate-950 md:bg-opacity-70">
+        <div className="h-[80%] md:ml-10 my-auto md:w-[80%] lg:w-[70%] ">
           <div>
             <header className="mb-10 text-white">
               <h1 className="text-5xl font-bold">Welcome Back</h1>
@@ -119,6 +137,12 @@ const Login: React.FC = () => {
                   Sign Up
                 </a>
               </p>
+              <Link
+                    href="/"
+                    className=" text-blue-600 underline hover:no-underline text-sm"
+                  >
+                    <span className="text-sm font-bold">GO BACK</span>
+                  </Link>
             </header>
           </div>
           <form onSubmit={handleSubmit}>
