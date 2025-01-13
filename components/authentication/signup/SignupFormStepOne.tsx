@@ -10,8 +10,12 @@ import {
 } from "@/lib/store/features/loading/loadingSlice";
 import SimpleSpinner from "@/components/loading/SimpleSpinner";
 import axios from "axios";
+import { useToast } from "@/hooks/use-toast"
+
 
 function SignupFormStepOne() {
+  const { toast } = useToast()
+
   const router = useRouter();
   const dispatch = useAppDispatch();
   const { loading, error } = useAppSelector((state) => state.loadHandler);
@@ -77,11 +81,20 @@ function SignupFormStepOne() {
 
       if (res.data.success) {
         setOtpSent(true);
+        toast({
+          title:res.data.message,
+          description: "Please check your enter email",
+        })
         setTimer(90);
         dispatch(requestFullfilled());
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error("Error sending OTP:", err);
+      toast({
+        title: "Oops! OTP send Fails, Try Again",
+        description: err.message,
+        variant:"destructive"
+      })
       dispatch(requestRejected());
     }
   };
@@ -98,6 +111,10 @@ function SignupFormStepOne() {
       if (res.data.success) {
         setIsVerified(true);
         dispatch(requestFullfilled());
+        toast({
+          title:`Yoo hoo! ${res.data.message}`,
+          description: "Now Let's build your Profile.",
+        })
         localStorage.setItem(
           "signup-email",
           JSON.stringify({ verifiedEmail: true, email: basicFormData.email })
@@ -106,8 +123,13 @@ function SignupFormStepOne() {
       } else {
         dispatch(requestRejected());
       }
-    } catch (err) {
+    } catch (err:any) {
       console.error("Error verifying OTP:", err);
+      toast({
+        title: err.message,
+        description: "Please check your email or OTP",
+        variant:"destructive"
+      })
       dispatch(requestRejected());
     }
   };
@@ -122,12 +144,20 @@ function SignupFormStepOne() {
 
       if (res.data.success) {
         setOtpSent(true);
+        toast({
+          title:"OTP has been resend again!",
+          description: "Verify your email",
+        })
         setTimer(120);
         dispatch(requestFullfilled());
       }
     } catch (err) {
       console.error("Error sending OTP:", err);
       dispatch(requestRejected());
+      toast({
+        title:"Resend OTP process failed!",
+        description: "Try again or wait for OTP process",
+      })
     }
   };
 

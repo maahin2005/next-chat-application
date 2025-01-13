@@ -8,8 +8,12 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SimpleSpinner from "@/components/loading/SimpleSpinner";
+import { useToast } from "@/hooks/use-toast"
+
 
 const Signup: React.FC = () => {
+  const { toast } = useToast()
+  
   
 const { data: session, status } = useSession();
 const [isAPICalled, setIsAPICalled] = useState(false);
@@ -27,13 +31,22 @@ const signup = async (userData:any) => {
 
     if(res.data.success) {
       alert(res.data.msg);
+      toast({
+        title: "Signup Successfully!",
+        description: res.data.msg,
+      })
 
       router.push("/dashboard");
       setLoading(false)
     }
 
-  } catch (error) {
+  } catch (error:any) {
     console.error("Signup error:", error);
+    toast({
+      title: "Oops! Signup Fails",
+      description: error.message,
+      variant:"destructive"
+    })
     setLoading(false)
   }
 };
