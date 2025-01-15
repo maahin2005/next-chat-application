@@ -20,10 +20,14 @@ import {
   requestIntiated,
   requestRejected,
 } from "@/lib/store/features/loading/loadingSlice";
+import { addMyProfileData } from "@/lib/store/features/myProfile/myProfileSlice";
 
 const MyProfileSec: React.FC = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { loading, error } = useSelector((state: any) => state.loadHandler);
+  const { profileImage, username, name, bio, heading } = useSelector(
+    (state: any) => state.myProfile
+  );
 
   const [profileData, setProfileData] = React.useState({
     profileImage: "",
@@ -33,14 +37,15 @@ const MyProfileSec: React.FC = () => {
     heading: "",
   });
 
-
-
   const fetchUserData = async () => {
+    if (profileImage || username || name || bio || heading) {
+      return;
+    }
     dispatch(requestIntiated());
     try {
       const resp = await axios.get("api/users/dashboard/profile");
-
-      setProfileData(resp.data.data);
+      // setProfileData();
+      dispatch(addMyProfileData(resp?.data?.data));
       dispatch(requestFullfilled());
     } catch (error) {
       console.log("Error: ", error);
@@ -75,20 +80,16 @@ const MyProfileSec: React.FC = () => {
         <ProfileSkeleton />
       ) : (
         <MyProfileArea
-          imageURL={
-            profileData.profileImage != ""
-              ? profileData.profileImage
-              : undefined
-          }
-          name={profileData?.name}
-          username={profileData?.username}
-          heading={profileData?.heading}
+          imageURL={profileImage}
+          name={name}
+          username={username}
+          heading={heading}
         />
       )}
       <div className="border-e-2 border-b-2 border-slate-100 p-3 rounded-xl">
         <h1 className="text-2xl font-kanit">BIO</h1>
         <p className="text-slate-600 text-lg font-spaceGro py-1">
-          {profileData.bio ?? "so boring...You have not added your bio yet!"}
+          {bio ?? "so boring...You have not added your bio yet!"}
         </p>
       </div>
     </div>

@@ -3,6 +3,8 @@ import userReducer from "./features/user/userSlice";
 import loginReducer from "./features/login/loginSlice";
 
 import loadingReducer from "./features/loading/loadingSlice";
+import myProfileReducer from "./features/myProfile/myProfileSlice";
+import MyRequestsReducer from "./features/myRequests/myRequests";
 
 export const makeStore = () => {
   return configureStore({
@@ -10,6 +12,8 @@ export const makeStore = () => {
       user: userReducer,
       login: loginReducer,
       loadHandler: loadingReducer,
+      myProfile: myProfileReducer,
+      myRequests:MyRequestsReducer
     },
   });
 };
