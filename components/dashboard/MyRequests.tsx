@@ -1,68 +1,82 @@
-import React from "react";
-import Image from "next/image"; // Adjust if you're not using Next.js
-import { FaCheck, FaTimes } from "react-icons/fa"; // Install with `npm install react-icons`
+"use client";
+
+import React, { useEffect, useState } from "react";
+import RequestsListUI from "./RequestsListUI";
+import { AppDispatch } from "@/lib/store/store";
+import { useDispatch, useSelector } from "react-redux";
+import axios from "axios";
+import { myIncomingRequests, myOutgoingRequests } from "@/lib/store/features/myRequests/myRequests";
 
 const friendRequests = [
   {
     id: 1,
     name: "John Doe",
-    avatar: "https://via.placeholder.com/40",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     time: "2 hours ago",
   },
   {
     id: 2,
     name: "Jane Smith",
-    avatar: "https://via.placeholder.com/40",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     time: "1 day ago",
   },
   {
     id: 3,
     name: "Mike Johnson",
-    avatar: "https://via.placeholder.com/40",
+    avatar: "https://randomuser.me/api/portraits/men/3.jpg",
     time: "3 days ago",
   },
 ];
 
 function MyRequests() {
+  const dispatch = useDispatch<AppDispatch>();
+  const [incoming,setIncoming] = useState(true)
+  const { incomingRequests,outgoingRequests } = useSelector((state: any) => state.myRequests);
+
+  const getRequests = async ()=>{
+    try {
+      const res = await axios.get("api/users/dashboard/requests");
+      dispatch(myIncomingRequests(res?.data?.data?.incoming))
+      dispatch(myOutgoingRequests(res?.data?.data?.outgoing))
+      console.log(incomingRequests,outgoingRequests)
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  useEffect(()=>{
+    getRequests();
+  },[])
+
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold mb-6">My Friend Requests</h1>
+    <div className="p-2">
+      <h1 className="text-2xl font-bold mb-4">My Friend Requests</h1>
+      <div className="flex">
+        <button onClick={()=>setIncoming(true)} className={`p-2 w-1/2 bg-slate-300 text-slate-400 ${incoming?"border-b-4 text-slate-900 border-b-blue-400":""}`}>Incoming</button>
+        <button onClick={()=>setIncoming(false)} className={`p-2 w-1/2 bg-slate-300 text-slate-400 ${!incoming?"border-b-4 text-slate-900 border-b-blue-400":""}`}>sent</button>
+      </div>
       <div className="space-y-4">
-        {friendRequests.map((request) => (
-          <div
-            key={request.id}
-            className="flex justify-between items-center bg-white p-4 rounded-md shadow-sm"
-          >
-            <div className="flex items-center gap-3">
-              <Image
-                src={request.avatar}
-                alt={`${request.name}'s avatar`}
-                width={40}
-                height={40}
-                className="w-10 h-10 rounded-full"
-              />
-              <div>
-                <p className="text-gray-800 font-semibold">
-                  {request.name}{" "}
-                  <span className="text-sm text-gray-500">
-                    sent you a friend request
-                  </span>
-                </p>
-                <p className="text-xs text-gray-500">{request.time}</p>
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <button className="flex items-center gap-2 text-sm bg-green-600 text-white py-1 px-3 rounded-md hover:bg-green-700 transition">
-                <FaCheck className="text-white" />
-                Accept
-              </button>
-              <button className="flex items-center gap-2 text-sm bg-red-600 text-white py-1 px-3 rounded-md hover:bg-red-700 transition">
-                <FaTimes className="text-white" />
-                Reject
-              </button>
-            </div>
-          </div>
-        ))}
+      {incomingRequests?.lentgh > 0 ? incomingRequests?.map((request:any) => (
+          <RequestsListUI 
+          key={request.id} 
+          avatar={request.avatar ?? "https://randomuser.me/api/portraits/men/3.jpg"} 
+          name={request.name} 
+          time={request.sentAt} 
+          username={request.username} 
+          incoming={incoming} 
+          outgoing={!incoming}
+          />
+        )):<div className="text-center p-5 text-xl"><h1>No any incoming requests</h1></div>}
+        {outgoingRequests?.lentgh > 0 ? outgoingRequests?.map((request:any) => (
+          <RequestsListUI 
+          key={request.id} 
+          avatar={request.avatar ?? "https://randomuser.me/api/portraits/men/3.jpg"} 
+          name={request.name} 
+          time={request.sentAt} 
+          username={request.username} 
+          incoming={incoming} 
+          outgoing={!incoming}
+          />
+        )):<div className="text-center p-5 text-xl"><h1>No any sent requests</h1></div>}
       </div>
     </div>
   );
