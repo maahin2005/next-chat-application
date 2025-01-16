@@ -4,7 +4,7 @@ import "./globals.css";
 import SessionsProviderWrapper from "@/components/SessionsProviderWrapper";
 import StoreProvider from "./StoreProvider";
 import { EdgeStoreProvider } from "@/lib/edgestore";
-import { Toaster } from "@/components/ui/toaster"
+import { Toaster } from "@/components/ui/toaster";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -46,7 +46,9 @@ export default function RootLayout({
           <body
             className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-[1800px] m-auto font-ubuntu`}
           >
-            <EdgeStoreProvider>{children} <Toaster /></EdgeStoreProvider>
+            <EdgeStoreProvider>
+              {children} <Toaster />
+            </EdgeStoreProvider>
           </body>
         </StoreProvider>
       </SessionsProviderWrapper>

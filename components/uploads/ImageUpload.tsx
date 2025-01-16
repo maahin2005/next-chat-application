@@ -47,11 +47,13 @@ export default function ImageUpload({ getImgURL }: any) {
         />
       </div>
       <button
-        className={`${urls?"text-green-500":"text-black"} bg-white px-3 py-2 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all`}
+        className={`${
+          urls ? "text-green-500" : "text-black"
+        } bg-white px-3 py-2 rounded-xl border-2 border-white hover:bg-transparent hover:text-white transition-all`}
         onClick={handleUploadButtonClick}
-        disabled={urls?true:false}
+        disabled={urls ? true : false}
       >
-        {urls?"Uploaded Successfully":"Upload"}
+        {urls ? "Uploaded Successfully" : "Upload"}
       </button>
     </div>
   );

@@ -40,7 +40,7 @@
     "app/api/auth/token.js",
     "app/api/otp/send/route.js",
     "app/api/otp/check/route.js"
-  ],
+, "app/api/users/discover/networks/route.js"  ],
   "exclude": [
     "node_modules"
   ]

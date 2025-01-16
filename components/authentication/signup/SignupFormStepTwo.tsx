@@ -50,7 +50,6 @@ function SignupFormStepTwo() {
           dispatch(requestFullfilled());
           localStorage.clear();
           router.push("/dashboard");
-
         }
       } catch (error) {
         console.log(error);
@@ -107,7 +106,7 @@ function SignupFormStepTwo() {
       setIsEmailVerified(localData.verifiedEmail);
       setFormData((prev) => ({ ...prev, email: localData.email }));
     }
-    
+
     if (storedData && !JSON.parse(storedData).verifiedEmail) {
       router.push("/auth/signup");
     }
@@ -134,16 +133,17 @@ function SignupFormStepTwo() {
     }
   }, [username, router]);
 
-  
-
   const togglePasswordVisibility = () => {
     setPasswordVisible(!isPasswordVisible);
   };
 
   return (
     <div className="">
-      <h2 className="text-2xl text-green-500 tracking-wide font-semibold">Great! Email verified successfully. 
-        <br/>Now let's</h2>
+      <h2 className="text-2xl text-green-500 tracking-wide font-semibold">
+        Great! Email verified successfully.
+        <br />
+        Now let's
+      </h2>
       <h1 className="text-4xl my-5 text-white tracking-wide font-bold">
         Build Your Profile
       </h1>

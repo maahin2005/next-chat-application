@@ -56,7 +56,6 @@ const ContactsChatList: React.FC = () => {
         className={`block md:hidden fixed top-0 right-0 h-full w-screen bg-gray-200 shadow-lg transform transition-transform duration-300 ${
           isVisible ? "translate-x-0" : "translate-x-full"
         }`}
-        
       >
         <MainChatSection hideMainChatFunc={hideMainChatSection} />
       </div>

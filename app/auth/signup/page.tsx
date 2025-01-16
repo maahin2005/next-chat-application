@@ -8,75 +8,71 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import SimpleSpinner from "@/components/loading/SimpleSpinner";
-import { useToast } from "@/hooks/use-toast"
-
+import { useToast } from "@/hooks/use-toast";
 
 const Signup: React.FC = () => {
-  const { toast } = useToast()
-  
-  
-const { data: session, status } = useSession();
-const [isAPICalled, setIsAPICalled] = useState(false);
-const router = useRouter();
+  const { toast } = useToast();
 
-const [loading,setLoading] = useState(false);
+  const { data: session, status } = useSession();
+  const [isAPICalled, setIsAPICalled] = useState(false);
+  const router = useRouter();
 
-const signup = async (userData:any) => {
-  console.log("HIIIIIIIIIIIIIII");
-  setLoading(true)
-  try {
+  const [loading, setLoading] = useState(false);
 
-    setIsAPICalled(true);
-    const res = await axios.post("/api/users/google-provider", userData);
+  const signup = async (userData: any) => {
+    console.log("HIIIIIIIIIIIIIII");
+    setLoading(true);
+    try {
+      setIsAPICalled(true);
+      const res = await axios.post("/api/users/google-provider", userData);
 
-    if(res.data.success) {
-      alert(res.data.msg);
+      if (res.data.success) {
+        alert(res.data.msg);
+        toast({
+          title: "Signup Successfully!",
+          description: res.data.msg,
+        });
+
+        router.push("/dashboard");
+        setLoading(false);
+      }
+    } catch (error: any) {
+      console.error("Signup error:", error);
       toast({
-        title: "Signup Successfully!",
-        description: res.data.msg,
-      })
+        title: "Oops! Signup Fails",
+        description: error.message,
+        variant: "destructive",
+      });
+      setLoading(false);
+    }
+  };
 
-      router.push("/dashboard");
-      setLoading(false)
+  const handleAuthByGoogle = async () => {
+    try {
+      await signIn("google");
+    } catch (error) {
+      console.error("Google auth error:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (session && session?.user && status === "authenticated") {
+      const userData = {
+        name: session?.user?.name,
+        email: session?.user?.email,
+        profileImage: session?.user?.image,
+      };
+      if (!isAPICalled) {
+        signup(userData);
+      }
     }
 
-  } catch (error:any) {
-    console.error("Signup error:", error);
-    toast({
-      title: "Oops! Signup Fails",
-      description: error.message,
-      variant:"destructive"
-    })
-    setLoading(false)
-  }
-};
+    const storedData = localStorage.getItem("signup-email");
 
-const handleAuthByGoogle = async () => {
-  try {
-    await signIn("google");
-  } catch (error) {
-    console.error("Google auth error:", error);
-  }
-};
-
-useEffect(() => {
-  if (session && session?.user && status === "authenticated") {
-    const userData = {
-      name: session?.user?.name,
-      email: session?.user?.email,
-      profileImage: session?.user?.image,
-    };
-    if(!isAPICalled){
-      signup(userData);
-    }
-  }
-
-  const storedData = localStorage.getItem("signup-email");
-  
     if (storedData && JSON.parse(storedData).verifiedEmail) {
       router.push("/auth/signup/build-profile");
     }
-}, [session, status,router]);
+  }, [session, status, router]);
 
   return (
     <>
@@ -87,7 +83,7 @@ useEffect(() => {
             <div className="border-l-2 ml-[1%] p-3 border-white md:m-auto">
               <div>
                 <header className="text-white">
-                    <h1 className="text-7xl font-bold">Letschat</h1>
+                  <h1 className="text-7xl font-bold">Letschat</h1>
                   <p className=" text-gray-400 mt-2">START FOR FREE</p>
                   <h2 className="text-4xl font-bold mt-2">
                     Create new account<span className="text-blue-500">.</span>
@@ -128,15 +124,17 @@ useEffect(() => {
                 className="my-3 transition-colors font-kanit text-lg tracking-wide bg-slate-200 text-black flex justify-center items-center gap-3 hover:text-white w-full m-auto hover:bg-transparent border-gray-200 rounded-full border-2 h-10 p-3"
                 onClick={handleAuthByGoogle}
               >
-                 {loading?<>
-                  <SimpleSpinner/>
-                  Navigating you to your dashboard
-                 </>
-                 :<>
-                  <FcGoogle className="text-2xl " />
-                  {session?.user?"Please wait...":"Continue with Google"}
-                 </>
-                  }
+                {loading ? (
+                  <>
+                    <SimpleSpinner />
+                    Navigating you to your dashboard
+                  </>
+                ) : (
+                  <>
+                    <FcGoogle className="text-2xl " />
+                    {session?.user ? "Please wait..." : "Continue with Google"}
+                  </>
+                )}
               </button>
             </div>
           </div>

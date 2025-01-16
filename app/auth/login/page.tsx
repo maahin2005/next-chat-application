@@ -11,7 +11,7 @@ import {
   loginSuccess,
   loginFailure,
 } from "@/lib/store/features/login/loginSlice";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 
 import { FcGoogle } from "react-icons/fc";
 import { FiUser } from "react-icons/fi";
@@ -20,11 +20,11 @@ import SimpleSpinner from "@/components/loading/SimpleSpinner";
 import Link from "next/link";
 
 const Login: React.FC = () => {
-  const { toast } = useToast()
- 
+  const { toast } = useToast();
+
   const { data: session, status } = useSession();
   const [isAPICalled, setIsAPICalled] = useState(false);
-  const router = useRouter()
+  const router = useRouter();
 
   const dispatch = useDispatch<AppDispatch>();
   const { loading } = useSelector((state: any) => state.login);
@@ -35,28 +35,26 @@ const Login: React.FC = () => {
     password: "",
   });
 
-  const signin = async (userData:any) => {
+  const signin = async (userData: any) => {
     console.log("HIIIIIIIIIIIIIII");
     try {
-  
       setIsAPICalled(true);
       const res = await axios.post("/api/users/google-provider", userData);
-  
-      if(res.data.success) {
-         toast({
+
+      if (res.data.success) {
+        toast({
           title: "Login Successfully!",
           description: res.data.msg,
-        })
+        });
         router.push("/dashboard");
-        
       }
-    } catch (error:any) {
+    } catch (error: any) {
       console.error("Signup error:", error);
       toast({
         title: "Oops! Login Fails",
         description: "Please check your credentials.",
-        variant:"destructive"
-      })
+        variant: "destructive",
+      });
     }
   };
 
@@ -83,15 +81,15 @@ const Login: React.FC = () => {
         toast({
           title: "Login Successfully!",
           description: res.data.msg,
-        })
+        });
         router.push("/dashboard");
       }
-    } catch (error:any) {
+    } catch (error: any) {
       toast({
         title: "Login Fail!",
         description: "Oops! Please check your credentials.",
-        variant:"destructive"
-      })
+        variant: "destructive",
+      });
       dispatch(loginFailure((error as Error).message));
       console.log("error: " + error);
     }
@@ -111,7 +109,7 @@ const Login: React.FC = () => {
         email: session?.user?.email,
         profileImage: session?.user?.image,
       };
-      if(!isAPICalled){
+      if (!isAPICalled) {
         signin(userData);
       }
     }
@@ -138,11 +136,11 @@ const Login: React.FC = () => {
                 </a>
               </p>
               <Link
-                    href="/"
-                    className=" text-blue-600 underline hover:no-underline text-sm"
-                  >
-                    <span className="text-sm font-bold">GO BACK</span>
-                  </Link>
+                href="/"
+                className=" text-blue-600 underline hover:no-underline text-sm"
+              >
+                <span className="text-sm font-bold">GO BACK</span>
+              </Link>
             </header>
           </div>
           <form onSubmit={handleSubmit}>

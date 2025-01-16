@@ -8,7 +8,10 @@ export async function middleware(request) {
   const url = request.nextUrl.pathname;
   const isAuth = await checkAuth(request);
 
-  if (!isAuth && ["/dashboard", "/letschat"].includes(url)) {
+  if (
+    !isAuth &&
+    ["/discover/networks", "/dashboard", "/letschat"].includes(url)
+  ) {
     return NextResponse.redirect(new URL("/auth/login", request.url));
   }
 
@@ -57,6 +60,7 @@ export const config = {
     "/api/users/modifications/:path*",
     "/api/users/features/:path*",
     "/dashboard",
+    "/discover/networks",
     "/letschat",
     "/auth/login",
     "/auth/signup",

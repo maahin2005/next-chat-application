@@ -5,6 +5,7 @@ import loginReducer from "./features/login/loginSlice";
 import loadingReducer from "./features/loading/loadingSlice";
 import myProfileReducer from "./features/myProfile/myProfileSlice";
 import MyRequestsReducer from "./features/myRequests/myRequests";
+import myNetworksReducer from "./features/networks/networks";
 
 export const makeStore = () => {
   return configureStore({
@@ -13,7 +14,8 @@ export const makeStore = () => {
       login: loginReducer,
       loadHandler: loadingReducer,
       myProfile: myProfileReducer,
-      myRequests:MyRequestsReducer
+      myRequests: MyRequestsReducer,
+      myNetworks: myNetworksReducer,
     },
   });
 };

@@ -19,21 +19,18 @@ import { RiMenu3Line } from "react-icons/ri";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 
-
 const Nav: React.FC = () => {
-
   const router = useRouter();
-  const logout = async () =>{
+  const logout = async () => {
     try {
       signOut();
       const resp = await axios.get("api/auth/logout");
-      alert(resp.data.message)
+      alert(resp.data.message);
       router.push("/auth/login");
     } catch (error) {
-
-      console.log("ERROR")
+      console.log("ERROR");
     }
-  }
+  };
 
   return (
     <nav className="flex px-3 sm:px-10 h-full">
@@ -51,11 +48,9 @@ const Nav: React.FC = () => {
             </h1>
           </Link>
           <PiToggleLeftDuotone className="text-4xl" />
-        <button onClick={logout} className="cursor-pointer">
-
-          <LuLogOut className="text-3xl" />
-        </button>
-
+          <button onClick={logout} className="cursor-pointer">
+            <LuLogOut className="text-3xl" />
+          </button>
         </div>
         <div className="md:hidden">
           <DropdownMenu>
